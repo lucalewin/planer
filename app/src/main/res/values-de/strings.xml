@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Planer</string>
+    <string name="app_info">Info</string>
+    <string name="settings">Einstellungen</string>
+    <string name="iserv_base_url_str">Iserv Base URL</string>
+    <string name="username">Benutzername</string>
+    <string name="password">Passwort</string>
+    <string name="save">Speichern</string>
+    <string name="cancel">Abbruch</string>
+    <string name="today">Heute</string>
+    <string name="tomorrow">Morgen</string>
+    <string name="general">Allgemein</string>
+    <string name="type">Type</string>
+    <string name="missing">Fehlt</string>
+    <string name="hour">Stunde</string>
+    <string name="language">Sprache</string>
+    <string name="notifications">Benachrichtigungen</string>
+</resources>

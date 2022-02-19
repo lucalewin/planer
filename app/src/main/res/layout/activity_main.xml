@@ -20,6 +20,7 @@
 
             <com.google.android.material.textview.MaterialTextView
                 style="?android:listSeparatorTextViewStyle"
+                android:id="@+id/label_planer_current_day"
                 android:text="@string/today" />
 
             <com.google.android.material.card.MaterialCardView
@@ -55,13 +56,12 @@
                             android:textSize="@dimen/sesl4_edit_text_size"
                             tools:ignore="RtlHardcoded" />
                     </TableRow>
-
                 </TableLayout>
-
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.textview.MaterialTextView
                 style="?android:listSeparatorTextViewStyle"
+                android:id="@+id/label_planer_next_day"
                 android:text="@string/tomorrow" />
 
             <com.google.android.material.card.MaterialCardView
@@ -97,41 +97,8 @@
                             android:textSize="@dimen/sesl4_edit_text_size"
                             tools:ignore="RtlHardcoded" />
                     </TableRow>
-
                 </TableLayout>
-
-<!--                <LinearLayout-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_marginHorizontal="24dp"-->
-<!--                    android:layout_marginVertical="10dp"-->
-<!--                    android:orientation="vertical">-->
-
-<!--                    <TextView-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:id="@+id/main_edit_text_affected_tomorrow"-->
-<!--                        android:singleLine="false" />-->
-
-<!--                </LinearLayout>-->
             </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
     </de.dlyt.yanndroid.oneui.widget.SwipeRefreshLayout>
-
-<!--    <FrameLayout-->
-<!--        android:id="@+id/fragment_container"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:background="@color/item_background_color"-->
-<!--        app:layout_location="main_content">-->
-
-<!--        <TextView-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:height="@dimen/sesl_edit_textfield_cursor_inset"-->
-<!--            android:id="@+id/test_text_view"-->
-<!--            android:text="HEY"/>-->
-
-<!--    </FrameLayout>-->
-
 </de.dlyt.yanndroid.oneui.layout.ToolbarLayout>

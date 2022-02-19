@@ -13,4 +13,6 @@
     <string name="type">Type</string>
     <string name="missing">Missing</string>
     <string name="hour">Hour</string>
+    <string name="language">Language</string>
+    <string name="notifications">Notifications</string>
 </resources>

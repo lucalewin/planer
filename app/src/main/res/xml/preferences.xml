@@ -10,11 +10,11 @@
         </de.dlyt.yanndroid.oneui.preference.PreferenceScreen>
 
         <de.dlyt.yanndroid.oneui.preference.PreferenceScreen
-            android:key="notifications" android:title="Notifications">
+            android:key="notifications" android:title="@string/notifications">
         </de.dlyt.yanndroid.oneui.preference.PreferenceScreen>
 
         <ListPreference
-            android:key="language_selector" android:title="Language" android:summary="English" android:entries="@array/languages" android:entryValues="@array/languages" />
+            android:key="language_selector" android:title="@string/language" android:summary="English" android:entries="@array/languages" android:entryValues="@array/languages" />
 
     </de.dlyt.yanndroid.oneui.preference.PreferenceCategory>
 
@@ -26,6 +26,12 @@
 <!--            <intent-->
 <!--                android:targetPackage="de.dlyt.yanndroid.oneuiexample" android:targetClass="de.dlyt.yanndroid.oneuiexample.SwitchBarActivity" />-->
         </SwitchPreferenceScreen>
+
+        <EditTextPreference
+            android:key="class" android:title="Class" android:summary="current class" />
+
+        <MultiSelectListPreference
+            android:key="courses" android:title="Courses" android:summary="Select your courses • Available courses in your class" />
 
     </de.dlyt.yanndroid.oneui.preference.PreferenceCategory>
 
