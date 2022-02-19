@@ -15,6 +15,8 @@ import java.net.HttpCookie;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.sql.Array;
+import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,8 +26,10 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicReference;
 
+import dev.lucalewin.planer.iserv.IservPlan;
 import dev.lucalewin.planer.iserv.IservPlanRow;
 import dev.lucalewin.planer.IservAccountSettingsActivity;
+import dev.lucalewin.planer.util.DayOfWeekUtil;
 
 public class IservWebScraper {
 
@@ -170,10 +174,7 @@ public class IservWebScraper {
         return response.get();
     }
 
-    public static List<IservPlanRow> getAffectedData(Context context, int day) {
-
-        String _class = "Q1";
-
+    public static IservPlan getAffectedData(Context context, int day) {
 
         // parse html document
         Document root = day == 0 ? Jsoup.parse(getTodayPlanerHtml(context)) : Jsoup.parse(getTomorrowPlanerHtml(context));
@@ -183,67 +184,111 @@ public class IservWebScraper {
         assert infoTable != null;
         Elements rows = infoTable.selectXpath("/table/tbody/tr");
 
+        String dayOfTheWeek = Objects.requireNonNull(root.getElementsByClass("mon_title").first()).text().split(" ")[1];
+
         if (rows.size() < 2) {
-            return new ArrayList<>();
+            return new IservPlan(DayOfWeekUtil.fromGermanDayName(dayOfTheWeek), null);
         }
 
 //        StringBuilder data = new StringBuilder();
-        List<IservPlanRow> data = new ArrayList<>();
+        final Map<String, List<IservPlanRow>> classes = new HashMap<>();
 
-        // parse info table
-        for (Element row : rows) {
-            if (Objects.requireNonNull(row.getAllElements().first()).text().contains("Betroffene Klassen")) {
-                String allAffectedClasses = row.getAllElements().get(2).text();
+        // parse planer
+        Element planerTable = root.getElementsByClass("mon_list").first();
 
-                if (allAffectedClasses.contains(_class)) {
+        assert planerTable != null;
+        Elements planerTableRows = planerTable.selectXpath("/table/tbody/tr");
 
-                    // parse planer
-                    Element planerTable = root.getElementsByClass("mon_list").first();
+        List<IservPlanRow> current;
 
-                    assert planerTable != null;
-                    Elements planerTableRows = planerTable.selectXpath("/table/tbody/tr");
+        for (int i = 0; i < planerTableRows.size(); i++) {
+            Element planerRow = planerTableRows.get(i);
 
-                    outer_loop:
-                    {
-                        for (int i = 0; i < planerTableRows.size(); i++) {
-                            Element planerRow = planerTableRows.get(i);
+            Element firstColumn = planerRow.children().first();
+            assert firstColumn != null;
+            String currentClass = firstColumn.text();
 
-                            Element firstColumn = planerRow.children().first();
-                            assert firstColumn != null;
-                            String title = firstColumn.text();
+            current = new ArrayList<>();
 
-                            if (title.equals(_class)) {
-                                for (int j = i + 1; j < planerTableRows.size(); j++) {
-                                    Element currentPlanerRow = planerTableRows.get(j);
+            for (++i; i < planerTableRows.size(); i++) {
+                Element currentPlanerRow = planerTableRows.get(i);
 
-                                    int size = currentPlanerRow.children().size();
-
-                                    if (currentPlanerRow.children().size() == 1) {
-                                        break outer_loop;
-                                    }
-
-                                    // loop through all columns of current row
-//                                    data.add(currentPlanerRow.text());
-                                    data.add(new IservPlanRow(
-                                            currentPlanerRow.children().get(0).text(),
-                                            currentPlanerRow.children().get(1).text(),
-                                            currentPlanerRow.children().get(2).text(),
-                                            currentPlanerRow.children().get(3).text(),
-                                            currentPlanerRow.children().get(4).text(),
-                                            currentPlanerRow.children().get(5).text(),
-                                            currentPlanerRow.children().get(6).text(),
-                                            currentPlanerRow.children().get(7).text(),
-                                            currentPlanerRow.children().get(8).text()
-                                    ));
-                                }
-                            }
-                        }
-                    }
+                if (currentPlanerRow.children().size() == 1) {
+                    i--;
+                    break;
                 }
+
+                // loop through all columns of current row
+                current.add(new IservPlanRow(
+                        currentPlanerRow.children().get(0).text(),
+                        currentPlanerRow.children().get(1).text(),
+                        currentPlanerRow.children().get(2).text(),
+                        currentPlanerRow.children().get(3).text(),
+                        currentPlanerRow.children().get(4).text(),
+                        currentPlanerRow.children().get(5).text(),
+                        currentPlanerRow.children().get(6).text(),
+                        currentPlanerRow.children().get(7).text(),
+                        currentPlanerRow.children().get(8).text()
+                ));
             }
+
+            classes.put(currentClass, current);
         }
 
-        return data;
+        return new IservPlan(DayOfWeekUtil.fromGermanDayName(dayOfTheWeek), classes);
+
+//        // parse info table
+//        for (Element row : rows) {
+//            if (Objects.requireNonNull(row.getAllElements().first()).text().contains("Betroffene Klassen")) {
+//                String allAffectedClasses = row.getAllElements().get(2).text();
+//
+//                if (allAffectedClasses.contains(_class)) {
+//
+//                    // parse planer
+//                    Element planerTable = root.getElementsByClass("mon_list").first();
+//
+//                    assert planerTable != null;
+//                    Elements planerTableRows = planerTable.selectXpath("/table/tbody/tr");
+//
+//                    outer_loop:
+//                    {
+//                        for (int i = 0; i < planerTableRows.size(); i++) {
+//                            Element planerRow = planerTableRows.get(i);
+//
+//                            Element firstColumn = planerRow.children().first();
+//                            assert firstColumn != null;
+//                            String title = firstColumn.text();
+//
+//                            if (title.equals(_class)) {
+//                                for (int j = i + 1; j < planerTableRows.size(); j++) {
+//                                    Element currentPlanerRow = planerTableRows.get(j);
+//
+//                                    int size = currentPlanerRow.children().size();
+//
+//                                    if (currentPlanerRow.children().size() == 1) {
+//                                        break outer_loop;
+//                                    }
+//
+//                                    // loop through all columns of current row
+////                                    data.add(currentPlanerRow.text());
+//                                    data.add(new IservPlanRow(
+//                                            currentPlanerRow.children().get(0).text(),
+//                                            currentPlanerRow.children().get(1).text(),
+//                                            currentPlanerRow.children().get(2).text(),
+//                                            currentPlanerRow.children().get(3).text(),
+//                                            currentPlanerRow.children().get(4).text(),
+//                                            currentPlanerRow.children().get(5).text(),
+//                                            currentPlanerRow.children().get(6).text(),
+//                                            currentPlanerRow.children().get(7).text(),
+//                                            currentPlanerRow.children().get(8).text()
+//                                    ));
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
     }
 
 }
