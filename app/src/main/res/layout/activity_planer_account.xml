@@ -15,5 +15,30 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <de.dlyt.yanndroid.oneui.widget.RoundFrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/item_background_color">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:paddingVertical="12dp">
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/sesl_edit_text_color"
+                        android:height="@dimen/sesl_edit_textfield_cursor_inset"/>
+
+                </LinearLayout>
+            </de.dlyt.yanndroid.oneui.widget.RoundFrameLayout>
+        </LinearLayout>
     </de.dlyt.yanndroid.oneui.widget.NestedScrollView>
 </de.dlyt.yanndroid.oneui.layout.ToolbarLayout>
