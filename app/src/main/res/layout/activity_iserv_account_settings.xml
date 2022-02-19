@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<de.dlyt.yanndroid.oneui.layout.ToolbarLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/iserv_account_settings_toolbar_layout"
+    app:title="Iserv Account"
+    app:expanded="false"
+    app:layout_behavior="@string/sesl_appbar_scrolling_view_behavior"
+    app:navigationIcon="@drawable/ic_samsung_arrow_left"
+    tools:context=".SettingsActivity">
+
+    <de.dlyt.yanndroid.oneui.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <de.dlyt.yanndroid.oneui.widget.RoundFrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/item_background_color">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:paddingVertical="12dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/sesl_edit_text_color"
+                        android:layout_marginHorizontal="22dp"
+                        android:layout_marginVertical="4dp"
+                        android:text="@string/iserv_base_url_str"
+                        android:labelFor="@+id/iserv_base_url_text_input" />
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/iserv_base_url_text_input"
+                        android:layout_marginHorizontal="16dp"
+                        android:layout_marginBottom="12dp"
+                        android:hint="@string/iserv_base_url_str"
+                        android:inputType="textUri"
+                        android:textColorHint="@color/sesl_edit_text_hint_color"
+                        android:height="@dimen/sesl_edit_textfield_cursor_inset" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/sesl_edit_text_color"
+                        android:layout_marginHorizontal="22dp"
+                        android:layout_marginVertical="4dp"
+                        android:text="@string/username"
+                        android:labelFor="@+id/iserv_username_text_input" />
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/iserv_username_text_input"
+                        android:layout_marginHorizontal="16dp"
+                        android:layout_marginBottom="12dp"
+                        android:hint="@string/username"
+                        android:inputType="textNoSuggestions"
+                        android:textColorHint="@color/sesl_edit_text_hint_color"
+                        android:height="@dimen/sesl_edit_textfield_cursor_inset" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/sesl_edit_text_color"
+                        android:layout_marginHorizontal="22dp"
+                        android:layout_marginVertical="4dp"
+                        android:text="@string/password"
+                        android:labelFor="@+id/iserv_password_text_input" />
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/iserv_password_text_input"
+                        android:layout_marginHorizontal="16dp"
+                        android:layout_marginBottom="12dp"
+                        android:hint="@string/password"
+                        android:inputType="textPassword"
+                        android:textColorHint="@color/sesl_edit_text_hint_color"
+                        android:height="@dimen/sesl_edit_textfield_cursor_inset" />
+                </LinearLayout>
+            </de.dlyt.yanndroid.oneui.widget.RoundFrameLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_location="footer"
+                android:layout_marginHorizontal="16dp">
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:height="48dp"
+                    android:layout_weight="1"
+                    style="@style/ButtonStyle.Transparent"
+                    android:id="@+id/iserv_acc_edit_cancel"
+                    android:textColor="@color/sesl_edit_text_color"
+                    android:text="@string/cancel"/>
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:height="48dp"
+                    android:layout_weight="1"
+                    style="@style/ButtonStyle.Transparent"
+                    android:id="@+id/iserv_acc_edit_save"
+                    android:enabled="false"
+                    android:textColor="@color/sesl_edit_text_color_disabled"
+                    android:text="@string/save" />
+            </LinearLayout>
+        </LinearLayout>
+    </de.dlyt.yanndroid.oneui.widget.NestedScrollView>
+</de.dlyt.yanndroid.oneui.layout.ToolbarLayout>

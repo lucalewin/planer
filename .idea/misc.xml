@@ -4,8 +4,14 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/projects/Planer/app/src/main/res/layout/activity_about.xml" value="0.358695652173913" />
+        <entry key="..\:/projects/Planer/app/src/main/res/layout/activity_iserv_account_settings.xml" value="0.358695652173913" />
         <entry key="..\:/projects/Planer/app/src/main/res/layout/activity_main.xml" value="0.24954710144927536" />
+        <entry key="..\:/projects/Planer/app/src/main/res/layout/activity_planer_account.xml" value="0.358695652173913" />
+        <entry key="..\:/projects/Planer/app/src/main/res/layout/activity_settings.xml" value="0.23772609819121446" />
         <entry key="..\:/projects/Planer/app/src/main/res/layout/content_drawer.xml" value="0.18541666666666667" />
+        <entry key="..\:/projects/Planer/app/src/main/res/layout/preferences.xml" value="0.358695652173913" />
+        <entry key="..\:/projects/Planer/app/src/main/res/layout/settings_listview_item.xml" value="0.358695652173913" />
+        <entry key="..\:/projects/Planer/app/src/main/res/menu/main.xml" value="0.3625" />
       </map>
     </option>
   </component>

@@ -1,35 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
-<de.dlyt.yanndroid.oneui.layout.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<de.dlyt.yanndroid.oneui.layout.ToolbarLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/drawer_view"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_toolbar_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:drawer_icon="@drawable/ic_samsung_info_2"
+    app:expanded="false"
     app:title="@string/app_name">
 
-    <FrameLayout
-        android:id="@+id/fragment_container"
+    <de.dlyt.yanndroid.oneui.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_location="main_content" />
+        android:id="@+id/main_swipe_refresh_layout">
 
-    <de.dlyt.yanndroid.oneui.widget.TabLayout
-        android:id="@+id/main_samsung_tabs"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_location="footer" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-    <include layout="@layout/content_drawer" />
+            <com.google.android.material.textview.MaterialTextView
+                style="?android:listSeparatorTextViewStyle"
+                android:text="@string/today" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/sesl_fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="24.0dip"
-        android:elevation="4.0dip"
-        app:srcCompat="@drawable/ic_samsung_list_add"
-        app:layout_location="root"
-        android:contentDescription="TODO" />
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-</de.dlyt.yanndroid.oneui.layout.DrawerLayout>
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="24dp"
+                    android:layout_marginVertical="10dp"
+                    android:id="@+id/planer_table_today">
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                        <TextView
+                            android:text="@string/hour"
+                            android:layout_marginRight="16dp"
+                            android:textColor="@color/sesl_edit_text_color"
+                            android:textSize="@dimen/sesl4_edit_text_size"
+                            tools:ignore="RtlHardcoded" />
+                        <TextView
+                            android:text="@string/missing"
+                            android:layout_marginRight="16dp"
+                            android:textColor="@color/sesl_edit_text_color"
+                            android:textSize="@dimen/sesl4_edit_text_size"
+                            tools:ignore="RtlHardcoded" />
+                        <TextView
+                            android:text="@string/type"
+                            android:layout_marginRight="16dp"
+                            android:textColor="@color/sesl_edit_text_color"
+                            android:textSize="@dimen/sesl4_edit_text_size"
+                            tools:ignore="RtlHardcoded" />
+                    </TableRow>
+
+                </TableLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.textview.MaterialTextView
+                style="?android:listSeparatorTextViewStyle"
+                android:text="@string/tomorrow" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="24dp"
+                    android:layout_marginVertical="10dp"
+                    android:id="@+id/planer_table_tomorrow">
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                        <TextView
+                            android:text="@string/hour"
+                            android:layout_marginRight="16dp"
+                            android:textColor="@color/sesl_edit_text_color"
+                            android:textSize="@dimen/sesl4_edit_text_size"
+                            tools:ignore="RtlHardcoded" />
+                        <TextView
+                            android:text="@string/missing"
+                            android:layout_marginRight="16dp"
+                            android:textColor="@color/sesl_edit_text_color"
+                            android:textSize="@dimen/sesl4_edit_text_size"
+                            tools:ignore="RtlHardcoded" />
+                        <TextView
+                            android:text="@string/type"
+                            android:layout_marginRight="16dp"
+                            android:textColor="@color/sesl_edit_text_color"
+                            android:textSize="@dimen/sesl4_edit_text_size"
+                            tools:ignore="RtlHardcoded" />
+                    </TableRow>
+
+                </TableLayout>
+
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginHorizontal="24dp"-->
+<!--                    android:layout_marginVertical="10dp"-->
+<!--                    android:orientation="vertical">-->
+
+<!--                    <TextView-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:id="@+id/main_edit_text_affected_tomorrow"-->
+<!--                        android:singleLine="false" />-->
+
+<!--                </LinearLayout>-->
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+    </de.dlyt.yanndroid.oneui.widget.SwipeRefreshLayout>
+
+<!--    <FrameLayout-->
+<!--        android:id="@+id/fragment_container"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:background="@color/item_background_color"-->
+<!--        app:layout_location="main_content">-->
+
+<!--        <TextView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:height="@dimen/sesl_edit_textfield_cursor_inset"-->
+<!--            android:id="@+id/test_text_view"-->
+<!--            android:text="HEY"/>-->
+
+<!--    </FrameLayout>-->
+
+</de.dlyt.yanndroid.oneui.layout.ToolbarLayout>

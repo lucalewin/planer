@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="dev.lucalewin.planer">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -10,10 +12,28 @@
         android:supportsRtl="true"
         android:theme="@style/OneUI4Theme">
         <activity
-            android:name=".MainActivity"
+            android:name=".PlanerAccountActivity"
+            android:exported="false" />
+
+        <meta-data
+            android:name="SamsungBasicInteraction"
+            android:value="SEP10" />
+        <meta-data
+            android:name="com.samsung.android.icon_container.has_icon_container"
+            android:value="true" />
+
+        <activity
+            android:name=".IservAccountSettingsActivity"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+            android:exported="false" />
+        <activity
+            android:name=".SettingsActivity"
             android:exported="false" />
         <activity
             android:name=".AboutActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
