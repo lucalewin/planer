@@ -1,9 +1,6 @@
 package dev.lucalewin.planer.iserv;
 
 import android.content.Context;
-import android.view.Gravity;
-import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
@@ -31,7 +28,7 @@ public class IservPlanRow {
         this.text = text;
     }
 
-    public View toTableRow(Context context) {
+    public TableRow toTableRow(Context context) {
         TableRow tableRow = new TableRow(context);
 
         TextView hourTw = new TextView(context);
@@ -41,6 +38,10 @@ public class IservPlanRow {
         TextView missingTw = new TextView(context);
         missingTw.setText(missing);
         tableRow.addView(missingTw);
+
+        TextView courseTw = new TextView(context);
+        courseTw.setText(subject);
+        tableRow.addView(courseTw);
 
         TextView typeTw = new TextView(context);
         typeTw.setText(type);

@@ -38,13 +38,19 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
                         <TextView
-                            android:text="@string/hour"
+                            android:text="@string/lesson"
                             android:layout_marginRight="16dp"
                             android:textColor="@color/sesl_edit_text_color"
                             android:textSize="@dimen/sesl4_edit_text_size"
                             tools:ignore="RtlHardcoded" />
                         <TextView
-                            android:text="@string/missing"
+                            android:text="@string/teacher"
+                            android:layout_marginRight="16dp"
+                            android:textColor="@color/sesl_edit_text_color"
+                            android:textSize="@dimen/sesl4_edit_text_size"
+                            tools:ignore="RtlHardcoded" />
+                        <TextView
+                            android:text="@string/course"
                             android:layout_marginRight="16dp"
                             android:textColor="@color/sesl_edit_text_color"
                             android:textSize="@dimen/sesl4_edit_text_size"
@@ -79,13 +85,19 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
                         <TextView
-                            android:text="@string/hour"
+                            android:text="@string/lesson"
                             android:layout_marginRight="16dp"
                             android:textColor="@color/sesl_edit_text_color"
                             android:textSize="@dimen/sesl4_edit_text_size"
                             tools:ignore="RtlHardcoded" />
                         <TextView
-                            android:text="@string/missing"
+                            android:text="@string/teacher"
+                            android:layout_marginRight="16dp"
+                            android:textColor="@color/sesl_edit_text_color"
+                            android:textSize="@dimen/sesl4_edit_text_size"
+                            tools:ignore="RtlHardcoded" />
+                        <TextView
+                            android:text="@string/course"
                             android:layout_marginRight="16dp"
                             android:textColor="@color/sesl_edit_text_color"
                             android:textSize="@dimen/sesl4_edit_text_size"
