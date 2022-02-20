@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <de.dlyt.yanndroid.oneui.preference.PreferenceCategory
-        android:title="General">
+        android:title="@string/category_general">
 
         <de.dlyt.yanndroid.oneui.preference.PreferenceScreen
-            android:key="preferences" android:title="Preferences" android:summary="Theme • Color">
+            android:key="preferences" android:title="@string/preferences" android:summary="Theme • Color">
         </de.dlyt.yanndroid.oneui.preference.PreferenceScreen>
 
         <de.dlyt.yanndroid.oneui.preference.PreferenceScreen
@@ -14,62 +14,60 @@
         </de.dlyt.yanndroid.oneui.preference.PreferenceScreen>
 
         <ListPreference
-            android:key="language_selector" android:title="@string/language" android:summary="English" android:entries="@array/languages" android:entryValues="@array/languages" />
+            android:key="language_selector" android:title="@string/language" android:entries="@array/languages" android:entryValues="@array/languages" />
 
     </de.dlyt.yanndroid.oneui.preference.PreferenceCategory>
 
     <de.dlyt.yanndroid.oneui.preference.PreferenceCategory
-        android:title="Planer">
+        android:title="@string/category_planer">
 
-        <SwitchPreferenceScreen
-            android:key="show_only_for_me" android:title="Show for me relevant info only" >
-<!--            <intent-->
-<!--                android:targetPackage="de.dlyt.yanndroid.oneuiexample" android:targetClass="de.dlyt.yanndroid.oneuiexample.SwitchBarActivity" />-->
-        </SwitchPreferenceScreen>
+<!--        <SwitchPreferenceScreen-->
+<!--            android:key="show_only_for_me" android:title="Show for me relevant info only" >-->
+<!--&lt;!&ndash;            <intent&ndash;&gt;-->
+<!--&lt;!&ndash;                android:targetPackage="de.dlyt.yanndroid.oneuiexample" android:targetClass="de.dlyt.yanndroid.oneuiexample.SwitchBarActivity" />&ndash;&gt;-->
+<!--        </SwitchPreferenceScreen>-->
 
         <EditTextPreference
-            android:key="class" android:title="Class" android:summary="current class" />
+            android:key="class" android:title="@string/_class" />
 
         <MultiSelectListPreference
-            android:key="courses" android:title="Courses" android:summary="Select your courses • Available courses in your class" />
+            android:key="courses" android:title="@string/courses" android:summary="Select your courses • Available courses in your class" />
 
     </de.dlyt.yanndroid.oneui.preference.PreferenceCategory>
 
     <de.dlyt.yanndroid.oneui.preference.PreferenceCategory
-        android:title="Accounts">
+        android:title="@string/category_accounts">
 
         <de.dlyt.yanndroid.oneui.preference.PreferenceScreen
-            android:key="planer_account" android:title="Planer Account" android:summary="Class • Courses">
+            android:key="planer_account" android:title="@string/account_planer_preference" android:summary="@string/account_planer_preference_summary">
             <intent android:targetPackage="dev.lucalewin.planer" android:targetClass="dev.lucalewin.planer.PlanerAccountActivity" />
         </de.dlyt.yanndroid.oneui.preference.PreferenceScreen>
 
         <de.dlyt.yanndroid.oneui.preference.PreferenceScreen
-            android:key="iserv_account" android:title="Iserv Account" android:summary="URL • Username • Password">
+            android:key="iserv_account" android:title="@string/account_iserv_preference_title" android:summary="@string/account_iserv_preference_summary">
             <intent android:targetPackage="dev.lucalewin.planer" android:targetClass="dev.lucalewin.planer.IservAccountSettingsActivity" />
         </de.dlyt.yanndroid.oneui.preference.PreferenceScreen>
 
     </de.dlyt.yanndroid.oneui.preference.PreferenceCategory>
 
     <de.dlyt.yanndroid.oneui.preference.PreferenceCategory
-        android:title="Information">
+        android:title="@string/category_information">
 
         <de.dlyt.yanndroid.oneui.preference.PreferenceScreen
-            android:key="privacy_policy" android:title="Privacy Policy">
+            android:key="privacy_policy" android:title="@string/privacy_policy">
 <!--            <intent android:targetPackage="dev.lucalewin.planer" android:targetClass="dev.lucalewin.planer.PrivacyPolicyActivity" />-->
         </de.dlyt.yanndroid.oneui.preference.PreferenceScreen>
 
         <de.dlyt.yanndroid.oneui.preference.PreferenceScreen
-            android:key="about_app" android:title="About Planer">
+            android:key="about_app" android:title="@string/app_info">
             <intent android:targetPackage="dev.lucalewin.planer" android:targetClass="dev.lucalewin.planer.AboutActivity" />
         </de.dlyt.yanndroid.oneui.preference.PreferenceScreen>
 
         <de.dlyt.yanndroid.oneui.preference.PreferenceScreen
-            android:key="contact_us" android:title="Contact us">
+            android:key="contact_us" android:title="@string/contact">
 <!--            <intent android:targetPackage="dev.lucalewin.planer" android:targetClass="dev.lucalewin.planer.AboutActivity" />-->
         </de.dlyt.yanndroid.oneui.preference.PreferenceScreen>
     </de.dlyt.yanndroid.oneui.preference.PreferenceCategory>
-
-
 
     <PreferenceCategory
         android:key="spacing1" />

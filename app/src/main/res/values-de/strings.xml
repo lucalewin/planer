@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Planer</string>
-    <string name="app_info">Info</string>
+    <string name="app_info">Info zu Planer</string>
     <string name="settings">Einstellungen</string>
     <string name="iserv_base_url_str">Iserv Base URL</string>
     <string name="username">Benutzername</string>
@@ -10,10 +9,25 @@
     <string name="cancel">Abbruch</string>
     <string name="today">Heute</string>
     <string name="tomorrow">Morgen</string>
-    <string name="general">Allgemein</string>
-    <string name="type">Type</string>
+    <string name="type">Art</string>
     <string name="missing">Fehlt</string>
     <string name="hour">Stunde</string>
     <string name="language">Sprache</string>
     <string name="notifications">Benachrichtigungen</string>
+    <string name="course">Kurs</string>
+    <string name="lesson">Stunde</string>
+    <string name="teacher">Lehrer</string>
+    <string name="privacy_policy">Datenschutz</string>
+    <string name="contact">Kontakt</string>
+    <string name="preferences">Style</string>
+    <string name="courses">Kurse</string>
+    <string name="account_planer_preference">Planer Account</string>
+    <string name="account_iserv_preference_title">Iserv Account</string>
+    <string name="_class">Klasse</string>
+    <string name="category_general">Allgemein</string>
+    <string name="category_planer">Planer</string>
+    <string name="category_accounts">Accounts</string>
+    <string name="category_information">Information</string>
+    <string name="account_planer_preference_summary">Klasse • Kurse</string>
+    <string name="account_iserv_preference_summary">URL • Benutzername • Password</string>
 </resources>

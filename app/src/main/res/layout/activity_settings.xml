@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/settings_toolbar_layout"
-    app:title="Settings"
+    app:title="@string/settings"
     app:expanded="false"
     app:layout_behavior="@string/sesl_appbar_scrolling_view_behavior"
     app:navigationIcon="@drawable/ic_samsung_arrow_left"

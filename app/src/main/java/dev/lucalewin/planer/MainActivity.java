@@ -12,7 +12,6 @@ import java.time.format.TextStyle;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 
 import de.dlyt.yanndroid.oneui.layout.ToolbarLayout;
 import de.dlyt.yanndroid.oneui.widget.SwipeRefreshLayout;
@@ -22,7 +21,6 @@ import dev.lucalewin.planer.iserv.IservPlanRow;
 import dev.lucalewin.planer.iserv.web_scraping.IservWebScraper;
 import dev.lucalewin.planer.iserv.web_scraping.TaskRunner;
 import dev.lucalewin.planer.preferences.Preferences;
-import dev.lucalewin.planer.preferences.language.LanguageUtil;
 import dev.lucalewin.planer.util.Tuple;
 
 public class MainActivity extends BaseThemeActivity {
@@ -45,7 +43,7 @@ public class MainActivity extends BaseThemeActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        LanguageUtil.init(this);
+//        LanguageUtil.init(this);
 
         mContext = this;
         toolbarLayout = findViewById(R.id.main_toolbar_layout);
