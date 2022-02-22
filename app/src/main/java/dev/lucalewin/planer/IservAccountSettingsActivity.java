@@ -111,6 +111,7 @@ public class IservAccountSettingsActivity extends AppCompatActivity {
             editor.putString("username", username = editTextIservUsername.getText().toString());
             editor.putString("password", password = editTextIservPassword.getText().toString());
             editor.apply();
+            onBackPressed();
         });
     }
 

@@ -5,13 +5,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/planer_account_toolbar_layout"
-    app:title="@string/account_planer_preference"
+    android:id="@+id/privacy_policy_toolbar_layout"
+    app:title="@string/privacy_policy"
     app:subtitle="@string/not_available_yet"
     app:expanded="true"
     app:layout_behavior="@string/sesl_appbar_scrolling_view_behavior"
     app:navigationIcon="@drawable/ic_samsung_arrow_left"
-    tools:context=".PlanerAccountActivity">
+    tools:context=".PrivacyPolicyActivity">
 
     <de.dlyt.yanndroid.oneui.widget.NestedScrollView
         android:layout_width="match_parent"

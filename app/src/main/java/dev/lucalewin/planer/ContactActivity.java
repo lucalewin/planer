@@ -6,14 +6,15 @@ import android.os.Bundle;
 
 import de.dlyt.yanndroid.oneui.layout.ToolbarLayout;
 
-public class PlanerAccountActivity extends AppCompatActivity {
+public class ContactActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_planer_account);
+        setContentView(R.layout.activity_contact);
 
-        ToolbarLayout toolbarLayout = findViewById(R.id.planer_account_toolbar_layout);
+        ToolbarLayout toolbarLayout = findViewById(R.id.contact_toolbar_layout);
         toolbarLayout.setNavigationButtonOnClickListener(view -> onBackPressed());
     }
+
 }

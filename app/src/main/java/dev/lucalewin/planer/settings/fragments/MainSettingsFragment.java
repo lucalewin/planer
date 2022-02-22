@@ -41,11 +41,11 @@ public class MainSettingsFragment extends PreferenceFragment {
 
         ListPreference languagePreference = findPreference("language_selector");
         EditTextPreference classPreference = findPreference("class");
-        MultiSelectListPreference coursesPreference = findPreference("courses");
+//        MultiSelectListPreference coursesPreference = findPreference("courses");
 
         assert languagePreference != null;
         assert classPreference    != null;
-        assert coursesPreference  != null;
+//        assert coursesPreference  != null;
 
         // init languagePreference
         String locale = sharedPreferences.getString("language", Locale.getDefault().getLanguage());
@@ -74,7 +74,7 @@ public class MainSettingsFragment extends PreferenceFragment {
 
         // init coursesPreference
         // FIXME
-        Set<String> courses = sharedPreferences.getStringSet("courses", Collections.emptySet());
-        coursesPreference.setEntries(courses.toArray(new String[] {}));
+//        Set<String> courses = sharedPreferences.getStringSet("courses", Collections.emptySet());
+//        coursesPreference.setEntries(courses.toArray(new String[] {}));
     }
 }

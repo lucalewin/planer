@@ -30,4 +30,7 @@
     <string name="category_information">Information</string>
     <string name="account_planer_preference_summary">Class • Courses</string>
     <string name="account_iserv_preference_summary">URL • Username • Password</string>
+    <string name="preferences_preference_summary">Theme • Color</string>
+    <string name="courses_preference_summary">Select your courses • Available courses in your class</string>
+    <string name="not_available_yet">Not available yet!</string>
 </resources>

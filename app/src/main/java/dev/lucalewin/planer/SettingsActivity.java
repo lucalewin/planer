@@ -73,7 +73,7 @@ public class SettingsActivity extends BaseThemeActivity {
         setContentView(R.layout.activity_settings);
 
         toolbarLayout = findViewById(R.id.settings_toolbar_layout);
-        toolbarLayout.setNavigationButtonOnClickListener(view -> this.finish());
+        toolbarLayout.setNavigationButtonOnClickListener(view -> onBackPressed());
 
         TypedValue divider = new TypedValue();
         this.getTheme().resolveAttribute(android.R.attr.listDivider, divider, true);

@@ -12,6 +12,21 @@
         android:supportsRtl="true"
         android:theme="@style/OneUI4Theme">
         <activity
+            android:name=".PreferencesSettingsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".NotificationSettingsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PrivacyPolicyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ContactActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CoursesActivity"
+            android:exported="false" />
+        <activity
             android:name=".PlanerAccountActivity"
             android:exported="false" />
 
