@@ -45,7 +45,7 @@
                         android:id="@+id/iserv_base_url_text_input"
                         android:layout_marginHorizontal="16dp"
                         android:layout_marginBottom="12dp"
-                        android:hint="@string/iserv_base_url_str"
+                        android:hint="@string/iserv_base_url_hint"
                         android:inputType="textUri"
                         android:textColorHint="@color/sesl_edit_text_hint_color"
                         android:height="@dimen/sesl_edit_textfield_cursor_inset" />
