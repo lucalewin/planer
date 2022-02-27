@@ -1,6 +1,7 @@
 package dev.lucalewin.planer.iserv;
 
 import android.content.Context;
+import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
@@ -31,21 +32,35 @@ public class IservPlanRow {
     public TableRow toTableRow(Context context) {
         TableRow tableRow = new TableRow(context);
 
+        TableRow.LayoutParams layoutParams = new TableRow.LayoutParams(
+                TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
+
+        layoutParams.setMargins(0, 0, 40, 0);
+
         TextView hourTw = new TextView(context);
+        hourTw.setLayoutParams(layoutParams);
         hourTw.setText(hour);
         tableRow.addView(hourTw);
 
         TextView missingTw = new TextView(context);
+        missingTw.setLayoutParams(layoutParams);
         missingTw.setText(missing);
         tableRow.addView(missingTw);
 
         TextView courseTw = new TextView(context);
+        courseTw.setLayoutParams(layoutParams);
         courseTw.setText(subject);
         tableRow.addView(courseTw);
 
         TextView typeTw = new TextView(context);
+        typeTw.setLayoutParams(layoutParams);
         typeTw.setText(type);
         tableRow.addView(typeTw);
+
+        TextView roomTw = new TextView(context);
+        roomTw.setLayoutParams(layoutParams);
+        roomTw.setText(room);
+        tableRow.addView(roomTw);
 
         return tableRow;
     }

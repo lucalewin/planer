@@ -18,99 +18,49 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <dev.lucalewin.planer.views.TipsCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:id="@+id/add_iserv_account_tip_card"
+                app:backgroundColor="@color/primary_color"
+                app:title="@string/account_iserv_preference_title"
+                app:message="@string/tips_card_iserv_account_message"/>
+
+            <dev.lucalewin.planer.views.TipsCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:id="@+id/tip_card_set_class"
+                app:backgroundColor="@color/primary_color"
+                app:title="@string/tips_card_class_title"
+                app:message="@string/tips_card_class_message"/>
+
             <com.google.android.material.textview.MaterialTextView
                 style="?android:listSeparatorTextViewStyle"
                 android:id="@+id/label_planer_current_day"
+                android:labelFor="@+id/planer_current_container"
                 android:text="@string/today" />
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TableLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginHorizontal="24dp"
-                    android:layout_marginVertical="10dp"
-                    android:id="@+id/planer_table_today">
-
-                    <TableRow
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-                        <TextView
-                            android:text="@string/lesson"
-                            android:layout_marginRight="16dp"
-                            android:textColor="@color/sesl_edit_text_color"
-                            android:textSize="@dimen/sesl4_edit_text_size"
-                            tools:ignore="RtlHardcoded" />
-                        <TextView
-                            android:text="@string/teacher"
-                            android:layout_marginRight="16dp"
-                            android:textColor="@color/sesl_edit_text_color"
-                            android:textSize="@dimen/sesl4_edit_text_size"
-                            tools:ignore="RtlHardcoded" />
-                        <TextView
-                            android:text="@string/course"
-                            android:layout_marginRight="16dp"
-                            android:textColor="@color/sesl_edit_text_color"
-                            android:textSize="@dimen/sesl4_edit_text_size"
-                            tools:ignore="RtlHardcoded" />
-                        <TextView
-                            android:text="@string/type"
-                            android:layout_marginRight="16dp"
-                            android:textColor="@color/sesl_edit_text_color"
-                            android:textSize="@dimen/sesl4_edit_text_size"
-                            tools:ignore="RtlHardcoded" />
-                    </TableRow>
-                </TableLayout>
-            </com.google.android.material.card.MaterialCardView>
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="24dp"
+                android:paddingVertical="10dp"
+                android:id="@+id/planer_current_container" />
 
             <com.google.android.material.textview.MaterialTextView
                 style="?android:listSeparatorTextViewStyle"
                 android:id="@+id/label_planer_next_day"
+                android:labelFor="@+id/planer_next_container"
                 android:text="@string/tomorrow" />
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TableLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginHorizontal="24dp"
-                    android:layout_marginVertical="10dp"
-                    android:id="@+id/planer_table_tomorrow">
-
-                    <TableRow
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-                        <TextView
-                            android:text="@string/lesson"
-                            android:layout_marginRight="16dp"
-                            android:textColor="@color/sesl_edit_text_color"
-                            android:textSize="@dimen/sesl4_edit_text_size"
-                            tools:ignore="RtlHardcoded" />
-                        <TextView
-                            android:text="@string/teacher"
-                            android:layout_marginRight="16dp"
-                            android:textColor="@color/sesl_edit_text_color"
-                            android:textSize="@dimen/sesl4_edit_text_size"
-                            tools:ignore="RtlHardcoded" />
-                        <TextView
-                            android:text="@string/course"
-                            android:layout_marginRight="16dp"
-                            android:textColor="@color/sesl_edit_text_color"
-                            android:textSize="@dimen/sesl4_edit_text_size"
-                            tools:ignore="RtlHardcoded" />
-                        <TextView
-                            android:text="@string/type"
-                            android:layout_marginRight="16dp"
-                            android:textColor="@color/sesl_edit_text_color"
-                            android:textSize="@dimen/sesl4_edit_text_size"
-                            tools:ignore="RtlHardcoded" />
-                    </TableRow>
-                </TableLayout>
-            </com.google.android.material.card.MaterialCardView>
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="24dp"
+                android:paddingVertical="10dp"
+                android:id="@+id/planer_next_container" />
         </LinearLayout>
     </de.dlyt.yanndroid.oneui.widget.SwipeRefreshLayout>
 </de.dlyt.yanndroid.oneui.layout.ToolbarLayout>

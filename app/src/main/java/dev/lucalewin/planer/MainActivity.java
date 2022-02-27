@@ -2,10 +2,17 @@ package dev.lucalewin.planer;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.TableLayout;
+import android.widget.TextView;
 
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textview.MaterialTextView;
+
+import org.w3c.dom.Text;
 
 import java.time.LocalDateTime;
 import java.time.format.TextStyle;
@@ -22,12 +29,11 @@ import dev.lucalewin.planer.iserv.web_scraping.IservWebScraper;
 import dev.lucalewin.planer.iserv.web_scraping.TaskRunner;
 import dev.lucalewin.planer.preferences.Preferences;
 import dev.lucalewin.planer.util.Tuple;
+import dev.lucalewin.planer.views.TipsCardView;
 
 public class MainActivity extends BaseThemeActivity {
 
     private static final TaskRunner runner = new TaskRunner();
-
-    private Context mContext;
 
     private ToolbarLayout toolbarLayout;
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -35,27 +41,26 @@ public class MainActivity extends BaseThemeActivity {
     private MaterialTextView currentDayPlanerLabel;
     private MaterialTextView nextDayPlanerLabel;
 
-    private TableLayout planerTableToday;
-    private TableLayout planerTableTomorrow;
+    private MaterialCardView currentPlanerContainer;
+    private MaterialCardView nextPlanerContainer;
+
+    private TipsCardView tipCardIservAccount;
+    private TipsCardView tipCardClass;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        LanguageUtil.init(this);
-
-        mContext = this;
         toolbarLayout = findViewById(R.id.main_toolbar_layout);
 
         toolbarLayout.inflateToolbarMenu(R.menu.main);
         toolbarLayout.setOnToolbarMenuItemClickListener(menuItem -> {
-            switch (menuItem.getItemId()) {
-                case R.id.settings_menu_item:
-                    startActivity(new Intent().setClass(this, SettingsActivity.class));
-                    break;
-                default:
-                    return false;
+            if (menuItem.getItemId() == R.id.settings_menu_item) {
+                startActivity(new Intent().setClass(this, SettingsActivity.class));
+            } else {
+                return false;
             }
             return true;
         });
@@ -67,10 +72,47 @@ public class MainActivity extends BaseThemeActivity {
         currentDayPlanerLabel = findViewById(R.id.label_planer_current_day);
         nextDayPlanerLabel = findViewById(R.id.label_planer_next_day);
 
-        planerTableToday = findViewById(R.id.planer_table_today);
-        planerTableTomorrow = findViewById(R.id.planer_table_tomorrow);
+        currentPlanerContainer = findViewById(R.id.planer_current_container);
+        nextPlanerContainer = findViewById(R.id.planer_next_container);
+
+        tipCardIservAccount = findViewById(R.id.add_iserv_account_tip_card);
+        tipCardIservAccount.setOnClickListener(view -> startActivity(new Intent().setClass(this, IservAccountSettingsActivity.class)));
+
+        tipCardClass = findViewById(R.id.tip_card_set_class);
+        tipCardClass.setOnClickListener(view -> startActivity(new Intent().setClass(this, SettingsActivity.class)));
+
+        if (!isIservAccountSpecified()) {
+            // show tip card
+            // make user set their iserv account
+            tipCardIservAccount.setVisibility(View.VISIBLE);
+            return;
+        }
+
+        if (!isClassSpecified()) {
+            // show tip card
+            // make user set their class (+ courses)
+            tipCardClass.setVisibility(View.VISIBLE);
+            return;
+        }
 
         loadIservData();
+    }
+
+    private boolean isIservAccountSpecified() {
+        SharedPreferences preferences = getSharedPreferences(IservAccountSettingsActivity.ISERV_SP_NAME, Context.MODE_PRIVATE);
+
+        String baseURL = preferences.getString("base_url", null);
+        String username = preferences.getString("username", null);
+        String password = preferences.getString("password", null);
+
+        System.out.println(baseURL + username + password);
+
+        return baseURL != null && username != null && password != null;
+    }
+
+    private boolean isClassSpecified() {
+        final String clazz = Preferences.getSharedPreferences(MainActivity.this).getString("class", null);
+        return clazz != null && !clazz.equals("");
     }
 
     private void loadIservData() {
@@ -87,9 +129,6 @@ public class MainActivity extends BaseThemeActivity {
 
             return Tuple.of(affectedDataToday, affectedDataTomorrow);
         }, (TaskRunner.Callback<Tuple<IservPlan, IservPlan>>) (result) -> {
-            planerTableToday.removeViews(1, planerTableToday.getChildCount() - 1);
-            planerTableTomorrow.removeViews(1, planerTableTomorrow.getChildCount() - 1);
-
             final IservPlan currentPlan = result.getFirst();
             final IservPlan nextPlan = result.getSecond();
 
@@ -107,24 +146,20 @@ public class MainActivity extends BaseThemeActivity {
                                 : nextPlan.getDay().getDisplayName(TextStyle.FULL, Locale.getDefault()));
             }
 
-            final Map<String, List<IservPlanRow>> affectedDataToday = currentPlan.getClasses();
-            final Map<String, List<IservPlanRow>> affectedDataTomorrow = nextPlan.getClasses();
-
-//            if (LocalDateTime.now().getDayOfWeek() == affectedDataToday.)
-
             final String clazz = Preferences.getSharedPreferences(MainActivity.this).getString("class", null);
 
             if (clazz == null) {
-                // show tip card
-                // make user set their class (+ courses)
+                // this should never be reached, but safety first :)
                 return;
             }
 
-            final List<IservPlanRow> current = affectedDataToday.get(clazz);
-            final List<IservPlanRow> next = affectedDataTomorrow.get(clazz);
+            TableLayout today = PlanerTable.initTable(MainActivity.this, clazz, currentPlan);
+            currentPlanerContainer.removeAllViews();
+            currentPlanerContainer.addView(today);
 
-            if (current != null) current.forEach(row -> planerTableToday.addView(row.toTableRow(MainActivity.this)));
-            if (next != null) next.forEach(row -> planerTableTomorrow.addView(row.toTableRow(MainActivity.this)));
+            TableLayout tomorrow = PlanerTable.initTable(MainActivity.this, clazz, nextPlan);
+            nextPlanerContainer.removeAllViews();
+            nextPlanerContainer.addView(tomorrow);
 
             swipeRefreshLayout.setRefreshing(false);
         });

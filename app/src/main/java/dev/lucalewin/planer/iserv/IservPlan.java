@@ -1,5 +1,7 @@
 package dev.lucalewin.planer.iserv;
 
+import android.widget.TableRow;
+
 import java.time.DayOfWeek;
 import java.util.List;
 import java.util.Map;

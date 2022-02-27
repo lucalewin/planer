@@ -33,4 +33,10 @@
     <string name="preferences_preference_summary">Theme • Color</string>
     <string name="not_available_yet">Noch nicht verfügbar!</string>
     <string name="courses_preference_summary">Wähle deine Kurse • Verfügbare Kurse in deiner Klasse</string>
+    <string name="room">Raum</string>
+    <string name="not_affected">Nicht Betroffen</string>
+    <string name="iserv_base_url_hint">Beispiel: iserv.kgs-wiesmoor.de</string>
+    <string name="tips_card_class_message">Du muss deine Klasse angeben, damit dir der Plan für deine Klasse angezeigt werden kann</string>
+    <string name="tips_card_iserv_account_message">Du musst deine Iserv-Accountdaten eingeben, damit die Planer-App funktioniert.</string>
+    <string name="tips_card_class_title">Deine Klasse festlegen</string>
 </resources>

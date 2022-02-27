@@ -33,4 +33,10 @@
     <string name="preferences_preference_summary">Theme • Color</string>
     <string name="courses_preference_summary">Select your courses • Available courses in your class</string>
     <string name="not_available_yet">Not available yet!</string>
+    <string name="room" >Room</string>
+    <string name="not_affected">Not Affected</string>
+    <string name="iserv_base_url_hint">Example: iserv.kgs-wiesmoor.de</string>
+    <string name="tips_card_iserv_account_message">You must enter your Iserv account details for the Planer app to work.</string>
+    <string name="tips_card_class_message">You must specify your class so that the plan for your class can be displayed.</string>
+    <string name="tips_card_class_title">Set your class</string>
 </resources>

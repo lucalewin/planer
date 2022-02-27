@@ -45,6 +45,9 @@ public class IservWebScraper {
                 IservAccountSettingsActivity.ISERV_SP_NAME, Context.MODE_PRIVATE);
 
         base_url = sharedPreferences.getString("base_url", "");
+        if (!base_url.startsWith("http://") && !base_url.startsWith("https://")) {
+            base_url = "https://" + base_url;
+        }
 
         String username = sharedPreferences.getString("username", "");
         String password = sharedPreferences.getString("password", "");
@@ -89,6 +92,9 @@ public class IservWebScraper {
                 IservAccountSettingsActivity.ISERV_SP_NAME, Context.MODE_PRIVATE);
 
         base_url = sharedPreferences.getString("base_url", "");
+        if (!base_url.startsWith("http://") && !base_url.startsWith("https://")) {
+            base_url = "https://" + base_url;
+        }
 
         final String login_url = base_url + "/iserv/plan/show/raw/Vertretungsplan%20Sch%C3%BCler/subst_001.htm";
 
@@ -134,6 +140,9 @@ public class IservWebScraper {
                 IservAccountSettingsActivity.ISERV_SP_NAME, Context.MODE_PRIVATE);
 
         base_url = sharedPreferences.getString("base_url", "");
+        if (!base_url.startsWith("http://") && !base_url.startsWith("https://")) {
+            base_url = "https://" + base_url;
+        }
 
         final String login_url = base_url + "/iserv/plan/show/raw/Vertretungsplan%20Sch%C3%BCler/subst_002.htm";
 
@@ -231,64 +240,8 @@ public class IservWebScraper {
                         currentPlanerRow.children().get(8).text()
                 ));
             }
-
             classes.put(currentClass, current);
         }
-
         return new IservPlan(DayOfWeekUtil.fromGermanDayName(dayOfTheWeek), classes);
-
-//        // parse info table
-//        for (Element row : rows) {
-//            if (Objects.requireNonNull(row.getAllElements().first()).text().contains("Betroffene Klassen")) {
-//                String allAffectedClasses = row.getAllElements().get(2).text();
-//
-//                if (allAffectedClasses.contains(_class)) {
-//
-//                    // parse planer
-//                    Element planerTable = root.getElementsByClass("mon_list").first();
-//
-//                    assert planerTable != null;
-//                    Elements planerTableRows = planerTable.selectXpath("/table/tbody/tr");
-//
-//                    outer_loop:
-//                    {
-//                        for (int i = 0; i < planerTableRows.size(); i++) {
-//                            Element planerRow = planerTableRows.get(i);
-//
-//                            Element firstColumn = planerRow.children().first();
-//                            assert firstColumn != null;
-//                            String title = firstColumn.text();
-//
-//                            if (title.equals(_class)) {
-//                                for (int j = i + 1; j < planerTableRows.size(); j++) {
-//                                    Element currentPlanerRow = planerTableRows.get(j);
-//
-//                                    int size = currentPlanerRow.children().size();
-//
-//                                    if (currentPlanerRow.children().size() == 1) {
-//                                        break outer_loop;
-//                                    }
-//
-//                                    // loop through all columns of current row
-////                                    data.add(currentPlanerRow.text());
-//                                    data.add(new IservPlanRow(
-//                                            currentPlanerRow.children().get(0).text(),
-//                                            currentPlanerRow.children().get(1).text(),
-//                                            currentPlanerRow.children().get(2).text(),
-//                                            currentPlanerRow.children().get(3).text(),
-//                                            currentPlanerRow.children().get(4).text(),
-//                                            currentPlanerRow.children().get(5).text(),
-//                                            currentPlanerRow.children().get(6).text(),
-//                                            currentPlanerRow.children().get(7).text(),
-//                                            currentPlanerRow.children().get(8).text()
-//                                    ));
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
     }
-
 }

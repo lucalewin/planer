@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:paddingHorizontal="20dp"
+    android:paddingVertical="8dp"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/planer_table_header"
+        tools:ignore="UselessParent">
+        <TextView
+            android:text="@string/lesson"
+            android:layout_marginRight="16dp"
+            android:textColor="@color/sesl_edit_text_color"
+            android:textSize="@dimen/sesl4_edit_text_size"
+            tools:ignore="RtlHardcoded" />
+        <TextView
+            android:text="@string/teacher"
+            android:layout_marginRight="16dp"
+            android:textColor="@color/sesl_edit_text_color"
+            android:textSize="@dimen/sesl4_edit_text_size"
+            tools:ignore="RtlHardcoded" />
+        <TextView
+            android:text="@string/course"
+            android:layout_marginRight="16dp"
+            android:textColor="@color/sesl_edit_text_color"
+            android:textSize="@dimen/sesl4_edit_text_size"
+            tools:ignore="RtlHardcoded" />
+        <TextView
+            android:text="@string/type"
+            android:layout_marginRight="16dp"
+            android:textColor="@color/sesl_edit_text_color"
+            android:textSize="@dimen/sesl4_edit_text_size"
+            tools:ignore="RtlHardcoded" />
+        <TextView
+            android:text="@string/room"
+            android:layout_marginRight="16dp"
+            android:textColor="@color/sesl_edit_text_color"
+            android:textSize="@dimen/sesl4_edit_text_size"
+            tools:ignore="RtlHardcoded" />
+    </TableRow>
+</TableLayout>
