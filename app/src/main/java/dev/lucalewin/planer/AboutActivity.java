@@ -8,6 +8,10 @@ import com.google.android.material.button.MaterialButton;
 
 import de.dlyt.yanndroid.oneui.layout.AboutPage;
 import dev.lucalewin.planer.base.BaseThemeActivity;
+import dev.lucalewin.planer.iserv.IservPlan;
+import dev.lucalewin.planer.iserv.web_scraping.TaskRunner;
+import dev.lucalewin.planer.util.Tuple;
+import dev.lucalewin.planer.version.Updater;
 
 public class AboutActivity extends BaseThemeActivity {
 
@@ -18,7 +22,18 @@ public class AboutActivity extends BaseThemeActivity {
 
         AboutPage about_page = findViewById(R.id.about_page);
 
-        about_page.setUpdateState(AboutPage.NO_UPDATE);
+        about_page.setUpdateState(AboutPage.LOADING);
+
+        Updater updater = new Updater(this, "lucalewin", "planer");
+
+        new TaskRunner().executeAsync(updater::isLatestVersionInstalled, (TaskRunner.Callback<Boolean>) (result) -> {
+            if (result) {
+                about_page.setUpdateState(AboutPage.NO_UPDATE);
+            } else {
+                about_page.setUpdateState(AboutPage.UPDATE_AVAILABLE);
+                about_page.setUpdateButtonOnClickListener(view -> updater.installLatestVersion());
+            }
+        });
 
         // TODO
 //        ((MaterialButton) findViewById(R.id.about_btn1)).setOnClickListener(v -> about_page.setUpdateState(AboutPage.LOADING));
