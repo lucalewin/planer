@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<de.dlyt.yanndroid.oneui.widget.RoundFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools">
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp">
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tips_card_title_textview"
+                android:textColor="@color/sesl_edit_text_color"
+                android:textStyle="bold"
+                android:textSize="@dimen/sesl4_edit_text_size"
+                android:layout_weight="1"/>
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:id="@+id/tips_card_close_imagebutton"
+                android:background="@drawable/ic_samsung_close" />
+        </TableRow>
+        <TableRow
+            android:layout_marginTop="8dp">
+            <TextView
+                android:layout_width="331dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingEnd="8dp"
+                android:id="@+id/tips_card_message_textview"
+                android:textColor="@color/sesl_edit_text_color"
+                android:textSize="@dimen/sesl_button_text_size"
+                tools:ignore="RtlSymmetry" />
+            <Space />
+        </TableRow>
+    </TableLayout>
+</de.dlyt.yanndroid.oneui.widget.RoundFrameLayout>
