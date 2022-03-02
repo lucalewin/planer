@@ -1,4 +1,4 @@
-package dev.lucalewin.planer.iserv.web_scraping;
+package dev.lucalewin.planer.util;
 
 import android.os.Handler;
 import android.os.Looper;
@@ -32,16 +32,16 @@ public class TaskRunner {
         });
     }
 
-    public <R> void executeAsync(Callable<R> callable, ErrorCallback errorCallback) {
-        executor.execute(() -> {
-            try {
-                callable.call();
-            } catch (Exception e) {
-                e.printStackTrace();
-                errorCallback.onError(e.getMessage());
-            }
-        });
-    }
+//    public <R> void executeAsync(Callable<R> callable, ErrorCallback errorCallback) {
+//        executor.execute(() -> {
+//            try {
+//                callable.call();
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//                errorCallback.onError(e.getMessage());
+//            }
+//        });
+//    }
 
     public <R> void executeAsync(Callable<R> callable, Callback<R> callback) {
         executor.execute(() -> {
