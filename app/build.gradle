@@ -4,40 +4,12 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.2.2'
-        classpath 'me.moallemi.gradle:advanced-build-version:1.7.3'
     }
 }
 
 plugins {
     id 'com.android.application'
 }
-
-//apply plugin: 'me.moallemi.advanced-build-version'
-
-
-
-
-//advancedVersioning {
-//    nameOptions {
-//        versionMajor 1
-//        versionMinor 0
-//        versionPatch 2
-//    }
-//    codeOptions {
-//        versionCodeType 'AUTO_INCREMENT_ONE_STEP'
-//        dependsOnTasks 'debug', 'release', 'assemble'
-//        versionCodeStep 1
-//    }
-//    outputOptions {
-//        renameOutput true
-//        nameFormat '${appName}-${buildType}-${versionName}-${versionCode}'
-//    }
-//}
-
-//def appVersionName = advancedVersioning.versionName
-//def appVersionCode = advancedVersioning.versionCode
-
-//System.out.println(appVersionName + " | " + appVersionCode)
 
 android {
     compileSdk 32
@@ -107,8 +79,6 @@ android {
     }
     buildToolsVersion '32.1.0 rc1'
 }
-
-//advancedVersioning.renameOutputApk()
 
 dependencies {
     implementation 'io.github.yanndroid:oneui:2.3.0'
