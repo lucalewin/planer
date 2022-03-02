@@ -92,13 +92,13 @@
                 android:targetClass="dev.lucalewin.planer.PrivacyPolicyActivity" />
         </de.dlyt.yanndroid.oneui.preference.PreferenceScreen>
 
-        <de.dlyt.yanndroid.oneui.preference.PreferenceScreen
+        <dev.lucalewin.planer.preferences.view.BadgePreferenceScreen
             android:key="about_app"
             android:title="@string/app_info">
             <intent
                 android:targetPackage="dev.lucalewin.planer"
                 android:targetClass="dev.lucalewin.planer.AboutActivity" />
-        </de.dlyt.yanndroid.oneui.preference.PreferenceScreen>
+        </dev.lucalewin.planer.preferences.view.BadgePreferenceScreen>
 
         <de.dlyt.yanndroid.oneui.preference.PreferenceScreen
             android:key="contact_us"
@@ -107,6 +107,16 @@
                 android:targetPackage="dev.lucalewin.planer"
                 android:targetClass="dev.lucalewin.planer.ContactActivity" />
         </de.dlyt.yanndroid.oneui.preference.PreferenceScreen>
+
+<!--        <dev.lucalewin.planer.preferences.view.BadgePreferenceScreen-->
+<!--            android:key="contact_us2"-->
+<!--            android:title="Badge">-->
+<!--        </dev.lucalewin.planer.preferences.view.BadgePreferenceScreen>-->
+
+<!--        <CheckBoxPreference-->
+<!--            android:key="checkbox"-->
+<!--            android:title="CheckBoxPreference" android:summary="Summary" />-->
+
     </de.dlyt.yanndroid.oneui.preference.PreferenceCategory>
 
     <PreferenceCategory
