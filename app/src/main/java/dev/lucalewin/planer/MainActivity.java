@@ -4,31 +4,26 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TableLayout;
-import android.widget.TextView;
 
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textview.MaterialTextView;
 
-import org.w3c.dom.Text;
-
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
-import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import de.dlyt.yanndroid.oneui.layout.ToolbarLayout;
 import de.dlyt.yanndroid.oneui.widget.SwipeRefreshLayout;
 import dev.lucalewin.planer.base.BaseThemeActivity;
 import dev.lucalewin.planer.iserv.IservPlan;
-import dev.lucalewin.planer.iserv.IservPlanRow;
 import dev.lucalewin.planer.iserv.web_scraping.IservWebScraper;
-import dev.lucalewin.planer.iserv.web_scraping.TaskRunner;
+import dev.lucalewin.planer.util.TaskRunner;
 import dev.lucalewin.planer.preferences.Preferences;
 import dev.lucalewin.planer.util.Tuple;
+import dev.lucalewin.planer.version.UpdateManager;
 import dev.lucalewin.planer.views.TipsCardView;
 
 public class MainActivity extends BaseThemeActivity {
@@ -65,6 +60,15 @@ public class MainActivity extends BaseThemeActivity {
             return true;
         });
 
+        UpdateManager updater = UpdateManager.getInstance(this);
+
+        new TaskRunner().executeAsync(updater::isLatestVersionInstalled, result -> {
+            if (!result) {
+                toolbarLayout.getToolbarMenu().findItem(R.id.settings_menu_item).setBadge(ToolbarLayout.N_BADGE);
+            }
+            Preferences.getSharedPreferences(this).edit().putBoolean("latestVersionInstalled", result).apply();
+        });
+
         swipeRefreshLayout = findViewById(R.id.main_swipe_refresh_layout);
         swipeRefreshLayout.seslSetRefreshOnce(true);
         swipeRefreshLayout.setOnRefreshListener(this::loadIservData);
@@ -81,6 +85,31 @@ public class MainActivity extends BaseThemeActivity {
         tipCardClass = findViewById(R.id.tip_card_set_class);
         tipCardClass.setOnClickListener(view -> startActivity(new Intent().setClass(this, SettingsActivity.class)));
 
+        loadIservData();
+    }
+
+    private boolean isIservAccountSpecified() {
+        SharedPreferences preferences = getSharedPreferences(IservAccountSettingsActivity.ISERV_SP_NAME, Context.MODE_PRIVATE);
+
+        String baseURL = preferences.getString("base_url", null);
+        String username = preferences.getString("username", null);
+        String password = preferences.getString("password", null);
+
+        System.out.println(baseURL + username + password);
+
+        return baseURL != null && username != null && password != null && !baseURL.equals("") && !username.equals("") && !password.equals("");
+    }
+
+    private boolean isClassSpecified() {
+        final String clazz = Preferences.getSharedPreferences(MainActivity.this).getString("class", null);
+        return clazz != null && !clazz.equals("");
+    }
+
+    private void loadIservData() {
+
+        tipCardIservAccount.setVisibility(View.GONE);
+        tipCardClass.setVisibility(View.GONE);
+
         if (!isIservAccountSpecified()) {
             // show tip card
             // make user set their iserv account
@@ -95,27 +124,6 @@ public class MainActivity extends BaseThemeActivity {
             return;
         }
 
-        loadIservData();
-    }
-
-    private boolean isIservAccountSpecified() {
-        SharedPreferences preferences = getSharedPreferences(IservAccountSettingsActivity.ISERV_SP_NAME, Context.MODE_PRIVATE);
-
-        String baseURL = preferences.getString("base_url", null);
-        String username = preferences.getString("username", null);
-        String password = preferences.getString("password", null);
-
-        System.out.println(baseURL + username + password);
-
-        return baseURL != null && username != null && password != null;
-    }
-
-    private boolean isClassSpecified() {
-        final String clazz = Preferences.getSharedPreferences(MainActivity.this).getString("class", null);
-        return clazz != null && !clazz.equals("");
-    }
-
-    private void loadIservData() {
         runner.executeAsync(() -> {
             swipeRefreshLayout.setRefreshing(true);
             IservWebScraper.login(this);
@@ -153,15 +161,18 @@ public class MainActivity extends BaseThemeActivity {
                 return;
             }
 
-            TableLayout today = PlanerTable.initTable(MainActivity.this, clazz, currentPlan);
+            TableLayout today = currentPlan.initTable(this, clazz);
             currentPlanerContainer.removeAllViews();
             currentPlanerContainer.addView(today);
 
-            TableLayout tomorrow = PlanerTable.initTable(MainActivity.this, clazz, nextPlan);
+            TableLayout tomorrow = nextPlan.initTable(this, clazz);
             nextPlanerContainer.removeAllViews();
             nextPlanerContainer.addView(tomorrow);
 
             swipeRefreshLayout.setRefreshing(false);
+
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+            toolbarLayout.setSubtitle(String.format(getString(R.string.iserv_synced_at), LocalDateTime.now().format(dateTimeFormatter)));
         });
     }
 

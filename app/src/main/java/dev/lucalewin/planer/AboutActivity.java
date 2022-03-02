@@ -1,17 +1,11 @@
 package dev.lucalewin.planer;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
-
-import com.google.android.material.button.MaterialButton;
 
 import de.dlyt.yanndroid.oneui.layout.AboutPage;
 import dev.lucalewin.planer.base.BaseThemeActivity;
-import dev.lucalewin.planer.iserv.IservPlan;
-import dev.lucalewin.planer.iserv.web_scraping.TaskRunner;
-import dev.lucalewin.planer.util.Tuple;
-import dev.lucalewin.planer.version.Updater;
+import dev.lucalewin.planer.util.TaskRunner;
+import dev.lucalewin.planer.version.UpdateManager;
 
 public class AboutActivity extends BaseThemeActivity {
 
@@ -24,9 +18,9 @@ public class AboutActivity extends BaseThemeActivity {
 
         about_page.setUpdateState(AboutPage.LOADING);
 
-        Updater updater = new Updater(this, "lucalewin", "planer");
+        UpdateManager updater = UpdateManager.getInstance(this);
 
-        new TaskRunner().executeAsync(updater::isLatestVersionInstalled, (TaskRunner.Callback<Boolean>) (result) -> {
+        new TaskRunner().executeAsync(updater::isLatestVersionInstalled, (result) -> {
             if (result) {
                 about_page.setUpdateState(AboutPage.NO_UPDATE);
             } else {

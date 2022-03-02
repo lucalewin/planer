@@ -8,17 +8,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Locale;
-import java.util.Set;
 
 import de.dlyt.yanndroid.oneui.layout.PreferenceFragment;
 import de.dlyt.yanndroid.oneui.preference.EditTextPreference;
 import de.dlyt.yanndroid.oneui.preference.ListPreference;
-import de.dlyt.yanndroid.oneui.preference.MultiSelectListPreference;
 import dev.lucalewin.planer.R;
 import dev.lucalewin.planer.preferences.Preferences;
 import dev.lucalewin.planer.preferences.language.LanguageUtil;
+import dev.lucalewin.planer.preferences.view.BadgePreferenceScreen;
 
 public class MainSettingsFragment extends PreferenceFragment {
 
@@ -41,11 +39,12 @@ public class MainSettingsFragment extends PreferenceFragment {
 
         ListPreference languagePreference = findPreference("language_selector");
         EditTextPreference classPreference = findPreference("class");
+        BadgePreferenceScreen appInfoPreference = findPreference("about_app");
 //        MultiSelectListPreference coursesPreference = findPreference("courses");
 
         assert languagePreference != null;
         assert classPreference    != null;
-//        assert coursesPreference  != null;
+        assert appInfoPreference  != null;
 
         // init languagePreference
         String locale = sharedPreferences.getString("language", Locale.getDefault().getLanguage());
@@ -71,6 +70,16 @@ public class MainSettingsFragment extends PreferenceFragment {
             classPreference.setSummary((String) clazz);
             return true;
         });
+
+        if (!sharedPreferences.getBoolean("latestVersionInstalled", true)) {
+            appInfoPreference.setBadge(BadgePreferenceScreen.N_BADGE);
+        }
+
+//        boolean updateAvailable = UpdateManager.getInstance(requireContext()).isLatestVersionInstalled();
+
+//        CheckBoxPreference checkBoxPreference = findPreference("checkbox");
+//        assert checkBoxPreference != null;
+//        checkBoxPreference.setWidgetLayoutResource(R.layout.badge_layout);
 
         // init coursesPreference
         // FIXME
