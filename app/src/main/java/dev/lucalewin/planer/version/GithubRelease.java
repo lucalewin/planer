@@ -5,6 +5,7 @@ import com.vdurmont.semver4j.Semver;
 public class GithubRelease {
 
     public String url;
+    public String html_url;
     public String tag_name;
     public String name;
     public GithubReleaseAsset[] assets;
