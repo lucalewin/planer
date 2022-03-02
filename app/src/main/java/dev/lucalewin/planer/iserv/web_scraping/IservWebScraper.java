@@ -15,8 +15,6 @@ import java.net.HttpCookie;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.sql.Array;
-import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,6 +28,7 @@ import dev.lucalewin.planer.iserv.IservPlan;
 import dev.lucalewin.planer.iserv.IservPlanRow;
 import dev.lucalewin.planer.IservAccountSettingsActivity;
 import dev.lucalewin.planer.util.DayOfWeekUtil;
+import dev.lucalewin.planer.util.TaskRunner;
 
 public class IservWebScraper {
 
