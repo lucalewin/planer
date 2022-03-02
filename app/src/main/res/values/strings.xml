@@ -39,4 +39,5 @@
     <string name="tips_card_iserv_account_message">You must enter your Iserv account details for the Planer app to work.</string>
     <string name="tips_card_class_message">You must specify your class so that the plan for your class can be displayed.</string>
     <string name="tips_card_class_title">Set your class</string>
+    <string name="iserv_synced_at">Synced with Iserv at %s</string>
 </resources>
