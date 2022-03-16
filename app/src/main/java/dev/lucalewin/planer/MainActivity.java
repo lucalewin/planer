@@ -17,18 +17,16 @@ import java.util.Locale;
 
 import de.dlyt.yanndroid.oneui.layout.ToolbarLayout;
 import de.dlyt.yanndroid.oneui.widget.SwipeRefreshLayout;
+import dev.lucalewin.planer.util.Task;
 import dev.lucalewin.planer.base.BaseThemeActivity;
+import dev.lucalewin.planer.iserv.IservInterface;
 import dev.lucalewin.planer.iserv.IservPlan;
-import dev.lucalewin.planer.iserv.web_scraping.IservWebScraper;
 import dev.lucalewin.planer.util.TaskRunner;
 import dev.lucalewin.planer.preferences.Preferences;
-import dev.lucalewin.planer.util.Tuple;
 import dev.lucalewin.planer.version.UpdateManager;
 import dev.lucalewin.planer.views.TipsCardView;
 
 public class MainActivity extends BaseThemeActivity {
-
-    private static final TaskRunner runner = new TaskRunner();
 
     private ToolbarLayout toolbarLayout;
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -41,7 +39,9 @@ public class MainActivity extends BaseThemeActivity {
 
     private TipsCardView tipCardIservAccount;
     private TipsCardView tipCardClass;
+    private TipsCardView tipCardError;
 
+    private final IservInterface iserv = IservInterface.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +71,7 @@ public class MainActivity extends BaseThemeActivity {
 
         swipeRefreshLayout = findViewById(R.id.main_swipe_refresh_layout);
         swipeRefreshLayout.seslSetRefreshOnce(true);
-        swipeRefreshLayout.setOnRefreshListener(this::loadIservData);
+        swipeRefreshLayout.setOnRefreshListener(() -> Task.run(this::validateAndLoadIservData));
 
         currentDayPlanerLabel = findViewById(R.id.label_planer_current_day);
         nextDayPlanerLabel = findViewById(R.id.label_planer_next_day);
@@ -85,30 +85,17 @@ public class MainActivity extends BaseThemeActivity {
         tipCardClass = findViewById(R.id.tip_card_set_class);
         tipCardClass.setOnClickListener(view -> startActivity(new Intent().setClass(this, SettingsActivity.class)));
 
-        loadIservData();
+        tipCardError = findViewById(R.id.tip_card_error);
+
+        Task.run(this::validateAndLoadIservData);
     }
 
-    private boolean isIservAccountSpecified() {
-        SharedPreferences preferences = getSharedPreferences(IservAccountSettingsActivity.ISERV_SP_NAME, Context.MODE_PRIVATE);
-
-        String baseURL = preferences.getString("base_url", null);
-        String username = preferences.getString("username", null);
-        String password = preferences.getString("password", null);
-
-        System.out.println(baseURL + username + password);
-
-        return baseURL != null && username != null && password != null && !baseURL.equals("") && !username.equals("") && !password.equals("");
-    }
-
-    private boolean isClassSpecified() {
-        final String clazz = Preferences.getSharedPreferences(MainActivity.this).getString("class", null);
-        return clazz != null && !clazz.equals("");
-    }
-
-    private void loadIservData() {
+    private void validateAndLoadIservData() {
+        swipeRefreshLayout.setRefreshing(true);
 
         tipCardIservAccount.setVisibility(View.GONE);
         tipCardClass.setVisibility(View.GONE);
+        tipCardError.setVisibility(View.GONE);
 
         if (!isIservAccountSpecified()) {
             // show tip card
@@ -124,56 +111,75 @@ public class MainActivity extends BaseThemeActivity {
             return;
         }
 
-        runner.executeAsync(() -> {
-            swipeRefreshLayout.setRefreshing(true);
-            IservWebScraper.login(this);
+        // check if user is logged in
+        if (!iserv.isUserLoggedIn()) {
+            boolean loggedIn = iserv.login(this);
 
-            // wait for WebScraper to login
-            // noinspection StatementWithEmptyBody
-            while (!IservWebScraper.isLoggedIn);
+            if (!loggedIn) {
+                // login failed --> display error + stop loading
+                tipCardError.setVisibility(View.VISIBLE);
+                tipCardError.setTitle("Error");
+                tipCardError.setMessage("Couldn't login to iserv\nCheck your iserv account again");
+                return;
+            }
+        }
 
-            final IservPlan affectedDataToday = IservWebScraper.getAffectedData(this, IservPlan.TODAY);
-            final IservPlan affectedDataTomorrow = IservWebScraper.getAffectedData(this, IservPlan.TOMORROW);
+        Task.run(this::loadIservData);
+    }
 
-            return Tuple.of(affectedDataToday, affectedDataTomorrow);
-        }, (TaskRunner.Callback<Tuple<IservPlan, IservPlan>>) (result) -> {
-            final IservPlan currentPlan = result.getFirst();
-            final IservPlan nextPlan = result.getSecond();
+    private boolean isIservAccountSpecified() {
+        SharedPreferences preferences = getSharedPreferences(IservAccountSettingsActivity.ISERV_SP_NAME, Context.MODE_PRIVATE);
 
+        String baseURL = preferences.getString("base_url", null);
+        String username = preferences.getString("username", null);
+        String password = preferences.getString("password", null);
+
+        return baseURL != null && username != null && password != null && !baseURL.equals("") && !username.equals("") && !password.equals("");
+    }
+
+    private boolean isClassSpecified() {
+        final String clazz = Preferences.getSharedPreferences(MainActivity.this).getString("class", null);
+        return clazz != null && !clazz.equals("");
+    }
+
+    private void loadIservData() {
+        // class is specified --> see above
+        final String clazz = Preferences.getSharedPreferences(MainActivity.this).getString("class", null);
+
+        // load current plan
+        final IservPlan currentPlan = iserv.getCurrentPlan(this);
+
+        if (currentPlan != null) {
             if (LocalDateTime.now().getDayOfWeek() != currentPlan.getDay()) {
-                currentDayPlanerLabel.setText(
-                        LocalDateTime.now().getDayOfWeek().plus(1) == currentPlan.getDay()
+                currentDayPlanerLabel.setText(LocalDateTime.now().getDayOfWeek().plus(1) == currentPlan.getDay()
                                 ? getResources().getString(R.string.tomorrow)
                                 : currentPlan.getDay().getDisplayName(TextStyle.FULL, Locale.getDefault()));
-            }
-
-            if (LocalDateTime.now().getDayOfWeek() != nextPlan.getDay()) {
-                nextDayPlanerLabel.setText(
-                        LocalDateTime.now().getDayOfWeek().plus(1) == nextPlan.getDay()
-                                ? getResources().getString(R.string.tomorrow)
-                                : nextPlan.getDay().getDisplayName(TextStyle.FULL, Locale.getDefault()));
-            }
-
-            final String clazz = Preferences.getSharedPreferences(MainActivity.this).getString("class", null);
-
-            if (clazz == null) {
-                // this should never be reached, but safety first :)
-                return;
             }
 
             TableLayout today = currentPlan.initTable(this, clazz);
             currentPlanerContainer.removeAllViews();
             currentPlanerContainer.addView(today);
+        }
+
+        // load next plan
+        final IservPlan nextPlan = iserv.getNextPlan(this);
+
+        if (nextPlan != null) {
+            if (LocalDateTime.now().getDayOfWeek() != nextPlan.getDay()) {
+                nextDayPlanerLabel.setText(LocalDateTime.now().getDayOfWeek().plus(1) == nextPlan.getDay()
+                                ? getResources().getString(R.string.tomorrow)
+                                : nextPlan.getDay().getDisplayName(TextStyle.FULL, Locale.getDefault()));
+            }
 
             TableLayout tomorrow = nextPlan.initTable(this, clazz);
             nextPlanerContainer.removeAllViews();
             nextPlanerContainer.addView(tomorrow);
+        }
 
-            swipeRefreshLayout.setRefreshing(false);
+        swipeRefreshLayout.setRefreshing(false);
 
-            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm");
-            toolbarLayout.setSubtitle(String.format(getString(R.string.iserv_synced_at), LocalDateTime.now().format(dateTimeFormatter)));
-        });
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+        toolbarLayout.setSubtitle(String.format(getString(R.string.iserv_synced_at), LocalDateTime.now().format(dateTimeFormatter)));
     }
 
 }

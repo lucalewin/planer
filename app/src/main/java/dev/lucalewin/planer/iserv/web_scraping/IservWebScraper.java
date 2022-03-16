@@ -8,11 +8,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.HttpCookie;
-import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -20,28 +16,26 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
+import dev.lucalewin.lib.web.http.HttpMethod;
+import dev.lucalewin.lib.web.http.WebClient;
+import dev.lucalewin.lib.web.http.WebRequest;
+import dev.lucalewin.lib.web.http.WebResponse;
 import dev.lucalewin.planer.iserv.IservPlan;
 import dev.lucalewin.planer.iserv.IservPlanRow;
 import dev.lucalewin.planer.IservAccountSettingsActivity;
 import dev.lucalewin.planer.util.DayOfWeekUtil;
-import dev.lucalewin.planer.util.TaskRunner;
 
 public class IservWebScraper {
 
-    private static final TaskRunner taskRunner = new TaskRunner();
-    private static final Executor executor = Executors.newSingleThreadExecutor();
     private static String base_url;
 
-    public static boolean isLoggedIn = false;
-    private static List<HttpCookie> cookies = new ArrayList<>();
+    private static final WebClient webClient = new WebClient();
 
-    public static void login(Context context) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences(
-                IservAccountSettingsActivity.ISERV_SP_NAME, Context.MODE_PRIVATE);
+    public static boolean login(Context context) throws MalformedURLException, ExecutionException, InterruptedException {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(IservAccountSettingsActivity.ISERV_SP_NAME, Context.MODE_PRIVATE);
 
         base_url = sharedPreferences.getString("base_url", "");
         if (!base_url.startsWith("http://") && !base_url.startsWith("https://")) {
@@ -53,40 +47,39 @@ public class IservWebScraper {
 
         final String login_url = base_url + "/iserv/app/login";
 
-        taskRunner.executeAsync(() -> {
-            URL url = new URL(login_url);
-            HttpURLConnection uc = (HttpURLConnection) url.openConnection();
+        final URL loginRequestUrl = new URL(login_url);
+        final String loginRequestBody = String.format("_username=%s&_password=%s&_remember_me=on", username, password);
 
-            uc.setRequestProperty("content-type", "application/x-www-form-urlencoded");
-            uc.setRequestMethod("POST");
-            uc.setDoInput(true);
-            uc.setInstanceFollowRedirects(false);
-            uc.connect();
-            OutputStreamWriter writer = new OutputStreamWriter(uc.getOutputStream(), StandardCharsets.UTF_8);
-            writer.write(String.format("_username=%s&_password=%s&_remember_me=on", username, password));
-            writer.close();
-            BufferedReader br = new BufferedReader(new InputStreamReader(uc.getInputStream()));
-            br.close();
-            uc.disconnect();
+        WebRequest loginRequest = new WebRequest(loginRequestUrl, HttpMethod.POST);
+        loginRequest.addHeaderField("content-type", "application/x-www-form-urlencoded");
+        loginRequest.setBody(loginRequestBody);
 
-            for (String cookieStr : Objects.requireNonNull(uc.getHeaderFields().get("set-cookie"))) {
-                String s = String.join(";", Objects.requireNonNull(uc.getHeaderFields().get("set-cookie")));
-                List<HttpCookie> cookies1 = HttpCookie.parse(cookieStr);
-            }
+        Future<WebResponse> responseFuture = webClient.makeRequestAsync(loginRequest);
+        WebResponse response = responseFuture.get();
 
-            cookies = new ArrayList<>();
-
-            for (String cookie : Objects.requireNonNull(uc.getHeaderFields().get("set-cookie"))) {
-                cookies.add(HttpCookie.parse(cookie).get(0));
-            }
-
-            isLoggedIn = !cookies.isEmpty();
-
-            return null;
-        });
+        return response.getResponseCode() == 302; // 302 = Found --> username and password were correct
     }
 
-    private static String getTodayPlanerHtml(Context context) {
+    private static String getTodayPlanerHtml(Context context) throws MalformedURLException, ExecutionException, InterruptedException {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(IservAccountSettingsActivity.ISERV_SP_NAME, Context.MODE_PRIVATE);
+
+        base_url = sharedPreferences.getString("base_url", "");
+        if (!base_url.startsWith("http://") && !base_url.startsWith("https://")) {
+            base_url = "https://" + base_url;
+        }
+
+        final String plan_url = base_url + "/iserv/plan/show/raw/Vertretungsplan%20Sch%C3%BCler/subst_001.htm";
+
+        WebRequest planerRequest = new WebRequest(new URL(plan_url), HttpMethod.GET);
+        planerRequest.setResponseCharset(StandardCharsets.ISO_8859_1);
+
+        Future<WebResponse> responseFuture = webClient.makeRequestAsync(planerRequest);
+        WebResponse webResponse = responseFuture.get();
+
+        return webResponse.getBody();
+    }
+
+    private static String getTomorrowPlanerHtml(Context context) throws MalformedURLException, ExecutionException, InterruptedException {
         SharedPreferences sharedPreferences = context.getSharedPreferences(
                 IservAccountSettingsActivity.ISERV_SP_NAME, Context.MODE_PRIVATE);
 
@@ -95,94 +88,18 @@ public class IservWebScraper {
             base_url = "https://" + base_url;
         }
 
-        final String login_url = base_url + "/iserv/plan/show/raw/Vertretungsplan%20Sch%C3%BCler/subst_001.htm";
+        final String planerUrl = base_url + "/iserv/plan/show/raw/Vertretungsplan%20Sch%C3%BCler/subst_002.htm";
 
-        AtomicReference<String> response = new AtomicReference<>("null");
+        WebRequest planerRequest = new WebRequest(new URL(planerUrl), HttpMethod.GET);
+        planerRequest.setResponseCharset(StandardCharsets.ISO_8859_1);
 
-        taskRunner.executeAsync(() -> {
-            URL url = new URL(login_url);
-            HttpURLConnection uc = (HttpURLConnection) url.openConnection();
+        Future<WebResponse> responseFuture = webClient.makeRequestAsync(planerRequest);
+        WebResponse response = responseFuture.get();
 
-            StringBuilder cookieHeaderValue = new StringBuilder();
-            for (HttpCookie cookie : cookies) {
-                cookieHeaderValue.append(cookie.getName()).append("=").append(cookie.getValue()).append("; ");
-            }
-
-            String cookie = cookieHeaderValue.substring(0, cookieHeaderValue.length() - 2);
-            uc.setRequestProperty("cookie", cookie);
-            uc.setRequestMethod("GET");
-            uc.setDoInput(true);
-            uc.setInstanceFollowRedirects(false);
-            uc.connect();
-            BufferedReader br = new BufferedReader(new InputStreamReader(uc.getInputStream(), StandardCharsets.ISO_8859_1));
-            StringBuilder builder = new StringBuilder();
-            String line;
-            while ((line = br.readLine()) != null) {
-                builder.append(line);
-            }
-            br.close();
-            uc.disconnect();
-
-            response.set(builder.toString());
-
-            return null;
-        });
-
-        // wait for request to finish
-        while (response.get().equals("null"));
-
-        return response.get();
+        return response.getBody();
     }
 
-    private static String getTomorrowPlanerHtml(Context context) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences(
-                IservAccountSettingsActivity.ISERV_SP_NAME, Context.MODE_PRIVATE);
-
-        base_url = sharedPreferences.getString("base_url", "");
-        if (!base_url.startsWith("http://") && !base_url.startsWith("https://")) {
-            base_url = "https://" + base_url;
-        }
-
-        final String login_url = base_url + "/iserv/plan/show/raw/Vertretungsplan%20Sch%C3%BCler/subst_002.htm";
-
-        AtomicReference<String> response = new AtomicReference<>("null");
-
-        taskRunner.executeAsync(() -> {
-            URL url = new URL(login_url);
-            HttpURLConnection uc = (HttpURLConnection) url.openConnection();
-
-            StringBuilder cookieHeaderValue = new StringBuilder();
-            for (HttpCookie cookie : cookies) {
-                cookieHeaderValue.append(cookie.getName()).append("=").append(cookie.getValue()).append("; ");
-            }
-
-            String cookie = cookieHeaderValue.substring(0, cookieHeaderValue.length() - 2);
-            uc.setRequestProperty("cookie", cookie);
-            uc.setRequestMethod("GET");
-            uc.setDoInput(true);
-            uc.setInstanceFollowRedirects(false);
-            uc.connect();
-            BufferedReader br = new BufferedReader(new InputStreamReader(uc.getInputStream(), StandardCharsets.ISO_8859_1));
-            StringBuilder builder = new StringBuilder();
-            String line;
-            while ((line = br.readLine()) != null) {
-                builder.append(line);
-            }
-            br.close();
-            uc.disconnect();
-
-            response.set(builder.toString());
-
-            return null;
-        });
-
-        // wait for request to finish
-        while (response.get().equals("null"));
-
-        return response.get();
-    }
-
-    public static IservPlan getAffectedData(Context context, int day) {
+    public static IservPlan getAffectedData(Context context, int day) throws MalformedURLException, ExecutionException, InterruptedException {
 
         // parse html document
         Document root = day == 0 ? Jsoup.parse(getTodayPlanerHtml(context)) : Jsoup.parse(getTomorrowPlanerHtml(context));
@@ -198,7 +115,6 @@ public class IservWebScraper {
             return new IservPlan(DayOfWeekUtil.fromGermanDayName(dayOfTheWeek), null);
         }
 
-//        StringBuilder data = new StringBuilder();
         final Map<String, List<IservPlanRow>> classes = new HashMap<>();
 
         // parse planer
