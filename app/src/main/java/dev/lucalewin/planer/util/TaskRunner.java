@@ -2,10 +2,13 @@ package dev.lucalewin.planer.util;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
+import java.util.Optional;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class TaskRunner {
 
@@ -22,6 +25,26 @@ public class TaskRunner {
         void onError(String message);
     }
 
+    public <R> Optional<R> execute(Callable<R> callable) {
+        AtomicReference<Optional<R>> reference = new AtomicReference<>(null);
+
+        executor.execute(() -> {
+            try {
+                reference.set(Optional.of(callable.call()));
+                return;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            reference.set(Optional.empty());
+        });
+
+        // noinspection OptionalAssignedToNull, StatementWithEmptyBody
+        while (reference.get() == null);
+
+        return reference.get();
+    }
+
     public <R> void executeAsync(Callable<R> callable) {
         executor.execute(() -> {
             try {
@@ -31,17 +54,6 @@ public class TaskRunner {
             }
         });
     }
-
-//    public <R> void executeAsync(Callable<R> callable, ErrorCallback errorCallback) {
-//        executor.execute(() -> {
-//            try {
-//                callable.call();
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//                errorCallback.onError(e.getMessage());
-//            }
-//        });
-//    }
 
     public <R> void executeAsync(Callable<R> callable, Callback<R> callback) {
         executor.execute(() -> {
