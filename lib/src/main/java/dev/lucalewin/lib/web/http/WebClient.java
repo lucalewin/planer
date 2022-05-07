@@ -14,7 +14,6 @@ import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
 import dev.lucalewin.lib.exceptions.NotImplementedException;
-import dev.lucalewin.lib.web.html.HtmlPage;
 import dev.lucalewin.lib.web.http.cookies.CookieStore;
 import dev.lucalewin.lib.web.http.cookies.HttpCookie;
 
@@ -26,10 +25,6 @@ public class WebClient {
     private final CookieStore cookieStore = new CookieStore();
 
     public static WebClient load(Context context, String id) {
-        return null;
-    }
-
-    public HtmlPage getPage(WebRequest request) {
         return null;
     }
 
