@@ -40,4 +40,5 @@
     <string name="tips_card_iserv_account_message">Du musst deine Iserv-Accountdaten eingeben, damit die Planer-App funktioniert.</string>
     <string name="tips_card_class_title">Deine Klasse festlegen</string>
     <string name="iserv_synced_at">Synchronisiert mit Iserv um %s</string>
+    <string name="no_internet_access">Keine Internetverbinding verfügbar</string>
 </resources>
