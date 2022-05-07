@@ -14,6 +14,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
@@ -25,8 +26,8 @@ import dev.lucalewin.lib.web.http.WebRequest;
 import dev.lucalewin.lib.web.http.WebResponse;
 import dev.lucalewin.planer.iserv.IservPlan;
 import dev.lucalewin.planer.iserv.IservPlanRow;
-import dev.lucalewin.planer.IservAccountSettingsActivity;
-import dev.lucalewin.planer.util.DayOfWeekUtil;
+import dev.lucalewin.planer.settings.IservAccountSettingsActivity;
+import dev.lucalewin.planer.util.DateUtil;
 
 public class IservWebScraper {
 
@@ -112,7 +113,7 @@ public class IservWebScraper {
         String dayOfTheWeek = Objects.requireNonNull(root.getElementsByClass("mon_title").first()).text().split(" ")[1];
 
         if (rows.size() < 2) {
-            return new IservPlan(DayOfWeekUtil.fromGermanDayName(dayOfTheWeek), null);
+            return new IservPlan(DateUtil.parseDayOfWeek(dayOfTheWeek, Locale.GERMAN), null);
         }
 
         final Map<String, List<IservPlanRow>> classes = new HashMap<>();
@@ -157,6 +158,6 @@ public class IservWebScraper {
             }
             classes.put(currentClass, current);
         }
-        return new IservPlan(DayOfWeekUtil.fromGermanDayName(dayOfTheWeek), classes);
+        return new IservPlan(DateUtil.parseDayOfWeek(dayOfTheWeek, Locale.GERMAN), classes);
     }
 }
