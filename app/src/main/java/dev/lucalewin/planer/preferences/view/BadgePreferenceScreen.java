@@ -16,8 +16,6 @@ public class BadgePreferenceScreen extends Preference {
 
     public static final int N_BADGE = -1;
 
-    private TextView badgeNumberTextView;
-
     private int badgeNumber = 0;
 
     public BadgePreferenceScreen(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
@@ -49,7 +47,7 @@ public class BadgePreferenceScreen extends Preference {
     public void onBindViewHolder(@NonNull PreferenceViewHolder holder) {
         super.onBindViewHolder(holder);
 
-        badgeNumberTextView = (TextView) holder.findViewById(R.id.badge_number);
+        TextView badgeNumberTextView = (TextView) holder.findViewById(R.id.badge_number);
 
         badgeNumberTextView.setVisibility(View.GONE);
 
