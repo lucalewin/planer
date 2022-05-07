@@ -1,12 +1,14 @@
-package dev.lucalewin.planer;
+package dev.lucalewin.planer.settings;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
 import de.dlyt.yanndroid.oneui.layout.ToolbarLayout;
+import dev.lucalewin.planer.R;
+import dev.lucalewin.planer.settings.base.SettingsBaseActivity;
 
-public class NotificationSettingsActivity extends AppCompatActivity {
+public class NotificationSettingsActivity extends SettingsBaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -11,7 +11,7 @@
     app:expanded="true"
     app:layout_behavior="@string/sesl_appbar_scrolling_view_behavior"
     app:navigationIcon="@drawable/ic_samsung_arrow_left"
-    tools:context=".NotificationSettingsActivity">
+    tools:context=".settings.NotificationSettingsActivity">
 
     <de.dlyt.yanndroid.oneui.widget.NestedScrollView
         android:layout_width="match_parent"

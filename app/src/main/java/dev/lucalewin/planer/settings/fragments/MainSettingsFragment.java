@@ -7,83 +7,53 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import java.util.Arrays;
-import java.util.Locale;
-
-import de.dlyt.yanndroid.oneui.layout.PreferenceFragment;
 import de.dlyt.yanndroid.oneui.preference.EditTextPreference;
-import de.dlyt.yanndroid.oneui.preference.ListPreference;
 import dev.lucalewin.planer.R;
 import dev.lucalewin.planer.preferences.Preferences;
-import dev.lucalewin.planer.preferences.language.LanguageUtil;
 import dev.lucalewin.planer.preferences.view.BadgePreferenceScreen;
+import dev.lucalewin.planer.settings.base.SettingsBaseFragment;
 
-public class MainSettingsFragment extends PreferenceFragment {
+public class MainSettingsFragment extends SettingsBaseFragment {
 
-    private SharedPreferences sharedPreferences;
-    private SharedPreferences.Editor editor;
+    private SharedPreferences        mSharedPreferences;
+    private SharedPreferences.Editor mSharedPreferencesEditor;
+
+    private EditTextPreference    mClassPreference;
+    private BadgePreferenceScreen mAboutAppPreference;
 
     @Override
     public void onCreatePreferences(@Nullable Bundle bundle, @Nullable String s) {
-        setPreferencesFromResource(R.xml.preferences, s);
+        setPreferencesFromResource(R.xml.settings, s);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        requireView().setBackgroundColor(getResources().getColor(de.dlyt.yanndroid.oneui.R.color.item_background_color));
 
-        sharedPreferences = Preferences.getSharedPreferences(requireContext());
-        assert sharedPreferences != null;
-        editor = sharedPreferences.edit();
+        mSharedPreferences       = Preferences.getSharedPreferences(requireContext());
+        mSharedPreferencesEditor = mSharedPreferences.edit();
 
-        ListPreference languagePreference = findPreference("language_selector");
-        EditTextPreference classPreference = findPreference("class");
-        BadgePreferenceScreen appInfoPreference = findPreference("about_app");
-//        MultiSelectListPreference coursesPreference = findPreference("courses");
+        mClassPreference         = findPreference("class");
+        mAboutAppPreference      = findPreference("about_app");
 
-        assert languagePreference != null;
-        assert classPreference    != null;
-        assert appInfoPreference  != null;
+        setupClassPreference();
+        setupAboutAppPreference();
+    }
 
-        // init languagePreference
-        String locale = sharedPreferences.getString("language", Locale.getDefault().getLanguage());
-        String[] locales = getResources().getStringArray(R.array.languages);
-        String[] languages = Arrays.stream(locales).map(s -> new Locale(s).getDisplayLanguage()).toArray(String[]::new);
-
-        languagePreference.setSummary(new Locale(locale).getDisplayLanguage());
-        languagePreference.setEntries(languages);
-        languagePreference.setValueIndex(Arrays.asList(languages).indexOf(new Locale(locale).getDisplayLanguage()));
-        languagePreference.setOnPreferenceChangeListener((preference, lang) -> {
-            sharedPreferences.edit().putString("language", (String) lang).apply();
-            LanguageUtil.setLanguage(requireContext(), (String) lang);
-            languagePreference.setSummary(new Locale((String) lang).getDisplayLanguage());
+    private void setupClassPreference() {
+        String currentClass = mSharedPreferences.getString("class", "");
+        mClassPreference.setText(currentClass);
+        mClassPreference.setSummary(currentClass);
+        mClassPreference.setOnPreferenceChangeListener((preference, clazz) -> {
+            mSharedPreferencesEditor.putString("class", (String) clazz).commit();
+            mClassPreference.setSummary((String) clazz);
             return true;
         });
+    }
 
-        // init classPreference
-        String currentClass = sharedPreferences.getString("class", "");
-        classPreference.setText(currentClass);
-        classPreference.setSummary(currentClass);
-        classPreference.setOnPreferenceChangeListener((preference, clazz) -> {
-            editor.putString("class", (String) clazz).commit();
-            classPreference.setSummary((String) clazz);
-            return true;
-        });
-
-        if (!sharedPreferences.getBoolean("latestVersionInstalled", true)) {
-            appInfoPreference.setBadge(BadgePreferenceScreen.N_BADGE);
+    private void setupAboutAppPreference() {
+        if (!mSharedPreferences.getBoolean("latestVersionInstalled", true)) {
+            mAboutAppPreference.setBadge(BadgePreferenceScreen.N_BADGE);
         }
-
-//        boolean updateAvailable = UpdateManager.getInstance(requireContext()).isLatestVersionInstalled();
-
-//        CheckBoxPreference checkBoxPreference = findPreference("checkbox");
-//        assert checkBoxPreference != null;
-//        checkBoxPreference.setWidgetLayoutResource(R.layout.badge_layout);
-
-        // init coursesPreference
-        // FIXME
-//        Set<String> courses = sharedPreferences.getStringSet("courses", Collections.emptySet());
-//        coursesPreference.setEntries(courses.toArray(new String[] {}));
     }
 }

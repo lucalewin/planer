@@ -1,6 +1,4 @@
-package dev.lucalewin.planer;
-
-import androidx.appcompat.app.AppCompatActivity;
+package dev.lucalewin.planer.settings;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -13,8 +11,9 @@ import android.widget.EditText;
 import de.dlyt.yanndroid.oneui.layout.ToolbarLayout;
 import dev.lucalewin.planer.BuildConfig;
 import dev.lucalewin.planer.R;
+import dev.lucalewin.planer.settings.base.SettingsBaseActivity;
 
-public class IservAccountSettingsActivity extends AppCompatActivity {
+public class IservAccountSettingsActivity extends SettingsBaseActivity {
 
     public static final String ISERV_SP_NAME = BuildConfig.APPLICATION_ID + ".iserv_account";
     private SharedPreferences sharedPreferences;

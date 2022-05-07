@@ -13,65 +13,70 @@
         android:layout_height="match_parent"
         android:id="@+id/main_swipe_refresh_layout">
 
-        <LinearLayout
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
-            <dev.lucalewin.planer.views.TipsCardView
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:id="@+id/add_iserv_account_tip_card"
-                app:backgroundColor="@color/primary_color"
-                app:title="@string/account_iserv_preference_title"
-                app:message="@string/tips_card_iserv_account_message"/>
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-            <dev.lucalewin.planer.views.TipsCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:id="@+id/tip_card_set_class"
-                app:backgroundColor="@color/primary_color"
-                app:title="@string/tips_card_class_title"
-                app:message="@string/tips_card_class_message"/>
+                <dev.lucalewin.planer.views.TipsCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:id="@+id/add_iserv_account_tip_card"
+                    app:backgroundColor="@color/primary_color"
+                    app:title="@string/account_iserv_preference_title"
+                    app:message="@string/tips_card_iserv_account_message"/>
 
-            <dev.lucalewin.planer.views.TipsCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:id="@+id/tip_card_error"
-                app:backgroundColor="@color/sesl_functional_red"
-                app:title="Error"
-                app:message="Iserv login failed" />
+                <dev.lucalewin.planer.views.TipsCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:id="@+id/tip_card_set_class"
+                    app:backgroundColor="@color/primary_color"
+                    app:title="@string/tips_card_class_title"
+                    app:message="@string/tips_card_class_message"/>
 
-            <com.google.android.material.textview.MaterialTextView
-                style="?android:listSeparatorTextViewStyle"
-                android:id="@+id/label_planer_current_day"
-                android:labelFor="@+id/planer_current_container"
-                android:text="@string/today" />
+                <dev.lucalewin.planer.views.TipsCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:id="@+id/tip_card_error"
+                    app:backgroundColor="@color/sesl_functional_red"
+                    app:title="Error"
+                    app:message="Iserv login failed" />
 
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minHeight="32dp"
-                android:paddingHorizontal="24dp"
-                android:paddingVertical="10dp"
-                android:id="@+id/planer_current_container" />
+                <com.google.android.material.textview.MaterialTextView
+                    style="?android:listSeparatorTextViewStyle"
+                    android:id="@+id/label_planer_current_day"
+                    android:labelFor="@+id/planer_current_container"
+                    android:text="@string/today" />
 
-            <com.google.android.material.textview.MaterialTextView
-                style="?android:listSeparatorTextViewStyle"
-                android:id="@+id/label_planer_next_day"
-                android:labelFor="@+id/planer_next_container"
-                android:text="@string/tomorrow" />
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="32dp"
+                    android:paddingHorizontal="24dp"
+                    android:paddingVertical="10dp"
+                    android:id="@+id/planer_current_container" />
 
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minHeight="32dp"
-                android:paddingHorizontal="24dp"
-                android:paddingVertical="10dp"
-                android:id="@+id/planer_next_container" />
-        </LinearLayout>
+                <com.google.android.material.textview.MaterialTextView
+                    style="?android:listSeparatorTextViewStyle"
+                    android:id="@+id/label_planer_next_day"
+                    android:labelFor="@+id/planer_next_container"
+                    android:text="@string/tomorrow" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="32dp"
+                    android:paddingHorizontal="24dp"
+                    android:paddingVertical="10dp"
+                    android:id="@+id/planer_next_container" />
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
     </de.dlyt.yanndroid.oneui.widget.SwipeRefreshLayout>
 </de.dlyt.yanndroid.oneui.layout.ToolbarLayout>
