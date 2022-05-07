@@ -36,7 +36,7 @@ public class IservPlan {
         @SuppressLint("InflateParams")
         TableLayout tableLayout = (TableLayout) LayoutInflater.from(context).inflate(R.layout.planer_table_layout, null, false);
 
-        final List<IservPlanRow> rows = classes.get(clazz);
+        final List<IservPlanRow> rows = classes.get(clazz.toUpperCase());
 
         if (rows != null) {
             rows.forEach(row -> tableLayout.addView(row.toTableRow(context)));

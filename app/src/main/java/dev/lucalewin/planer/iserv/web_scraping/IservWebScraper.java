@@ -131,7 +131,7 @@ public class IservWebScraper {
 
             Element firstColumn = planerRow.children().first();
             assert firstColumn != null;
-            String currentClass = firstColumn.text();
+            String currentClass = firstColumn.text().toUpperCase();
 
             current = new ArrayList<>();
 
