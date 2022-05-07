@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<de.dlyt.yanndroid.oneui.preference.PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!--  General  -->
+    <de.dlyt.yanndroid.oneui.preference.PreferenceCategory
+        android:title="@string/category_general">
+
+        <!--  Preferences  -->
+        <de.dlyt.yanndroid.oneui.preference.PreferenceScreen
+            android:key="preferences"
+            android:title="@string/preferences"
+            android:summary="@string/preferences_preference_summary">
+            <intent
+                android:targetPackage="dev.lucalewin.planer"
+                android:targetClass="dev.lucalewin.planer.settings.PreferenceSettingsActivity" />
+        </de.dlyt.yanndroid.oneui.preference.PreferenceScreen>
+
+        <!--  Notifications  -->
+        <de.dlyt.yanndroid.oneui.preference.PreferenceScreen
+            android:key="notifications"
+            android:title="@string/notifications">
+            <intent
+                android:targetPackage="dev.lucalewin.planer"
+                android:targetClass="dev.lucalewin.planer.settings.NotificationSettingsActivity" />
+        </de.dlyt.yanndroid.oneui.preference.PreferenceScreen>
+
+    </de.dlyt.yanndroid.oneui.preference.PreferenceCategory>
+
+    <!--  Planer  -->
+    <de.dlyt.yanndroid.oneui.preference.PreferenceCategory
+        android:title="@string/category_planer">
+
+        <EditTextPreference
+            android:key="class"
+            android:title="@string/_class" />
+
+        <SwitchPreferenceScreen
+            android:key="switch_preference_screen"
+            android:title="@string/courses">
+            <intent
+                android:targetPackage="dev.lucalewin.planer"
+                android:targetClass="dev.lucalewin.planer.CoursesActivity" />
+        </SwitchPreferenceScreen>
+    </de.dlyt.yanndroid.oneui.preference.PreferenceCategory>
+
+    <!--  Accounts  -->
+    <de.dlyt.yanndroid.oneui.preference.PreferenceCategory
+        android:title="@string/category_accounts">
+
+        <!-- Planer Account -->
+        <de.dlyt.yanndroid.oneui.preference.PreferenceScreen
+            android:key="planer_account"
+            android:title="@string/account_planer_preference"
+            android:summary="@string/account_planer_preference_summary">
+            <intent
+                android:targetPackage="dev.lucalewin.planer"
+                android:targetClass="dev.lucalewin.planer.PlanerAccountActivity" />
+        </de.dlyt.yanndroid.oneui.preference.PreferenceScreen>
+
+        <!-- Iserv Account -->
+        <de.dlyt.yanndroid.oneui.preference.PreferenceScreen
+            android:key="iserv_account"
+            android:title="@string/account_iserv_preference_title"
+            android:summary="@string/account_iserv_preference_summary">
+            <intent
+                android:targetPackage="dev.lucalewin.planer"
+                android:targetClass="dev.lucalewin.planer.settings.IservAccountSettingsActivity" />
+        </de.dlyt.yanndroid.oneui.preference.PreferenceScreen>
+    </de.dlyt.yanndroid.oneui.preference.PreferenceCategory>
+
+    <!--  Information  -->
+    <de.dlyt.yanndroid.oneui.preference.PreferenceCategory
+        android:title="@string/category_information">
+
+        <!-- Privacy Policy -->
+        <dev.lucalewin.planer.preferences.view.BadgePreferenceScreen
+            android:key="privacy_policy"
+            android:title="@string/privacy_policy">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://github.com/lucalewin/planer/blob/develop/PRIVACY.md"/>
+        </dev.lucalewin.planer.preferences.view.BadgePreferenceScreen>
+
+        <!-- About App -->
+        <dev.lucalewin.planer.preferences.view.BadgePreferenceScreen
+            android:key="about_app"
+            android:title="@string/app_info">
+            <intent
+                android:targetPackage="dev.lucalewin.planer"
+                android:targetClass="dev.lucalewin.planer.AboutActivity"/>
+        </dev.lucalewin.planer.preferences.view.BadgePreferenceScreen>
+
+        <!-- Contact -->
+        <de.dlyt.yanndroid.oneui.preference.PreferenceScreen
+            android:key="contact_us"
+            android:title="@string/contact">
+            <intent
+                android:targetPackage="dev.lucalewin.planer"
+                android:targetClass="dev.lucalewin.planer.ContactActivity" />
+        </de.dlyt.yanndroid.oneui.preference.PreferenceScreen>
+    </de.dlyt.yanndroid.oneui.preference.PreferenceCategory>
+
+    <PreferenceCategory android:key="spacing1" />
+
+</de.dlyt.yanndroid.oneui.preference.PreferenceScreen>
