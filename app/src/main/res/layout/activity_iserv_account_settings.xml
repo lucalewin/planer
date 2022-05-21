@@ -39,16 +39,31 @@
                         android:text="@string/iserv_base_url_str"
                         android:labelFor="@+id/iserv_base_url_text_input" />
 
-                    <EditText
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/iserv_base_url_text_input"
+                        android:layout_height="match_parent"
                         android:layout_marginHorizontal="16dp"
-                        android:layout_marginBottom="12dp"
-                        android:hint="@string/iserv_base_url_hint"
-                        android:inputType="textUri"
-                        android:textColorHint="@color/sesl_edit_text_hint_color"
-                        android:height="@dimen/sesl_edit_textfield_cursor_inset" />
+                        app:hintEnabled="false"
+                        app:errorEnabled="true"
+                        android:outlineProvider="none"
+                        android:defaultFocusHighlightEnabled="false"
+                        android:focusable="false"
+                        android:padding="0px"
+                        app:boxStrokeWidth="0dp"
+                        app:boxStrokeWidthFocused="0dp"
+                        app:errorTextColor="@color/sesl_error_color"
+                        android:id="@+id/iserv_base_url_text_input_layout">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:justificationMode="none"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/iserv_base_url_text_input"
+                            android:hint="@string/iserv_base_url_hint"
+                            android:inputType="textUri"
+                            android:textColorHint="@color/sesl_edit_text_hint_color"
+                            android:height="@dimen/sesl4_edit_text_size" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
                     <TextView
                         android:layout_width="match_parent"
@@ -89,6 +104,7 @@
                         android:inputType="textPassword"
                         android:textColorHint="@color/sesl_edit_text_hint_color"
                         android:height="@dimen/sesl_edit_textfield_cursor_inset" />
+
                 </LinearLayout>
             </de.dlyt.yanndroid.oneui.widget.RoundFrameLayout>
             <LinearLayout
