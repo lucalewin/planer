@@ -1,10 +1,12 @@
-package dev.lucalewin.planer;
+package dev.lucalewin.planer.account;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 
 import java.util.Collections;
 import java.util.Set;
+
+import dev.lucalewin.planer.BuildConfig;
 
 public class PlanerAccount {
 
