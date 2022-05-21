@@ -38,12 +38,16 @@ public class PreferencesSettingsFragment extends SettingsBaseFragment implements
     @Override
     public boolean onPreferenceChange(@NonNull Preference preference, Object newValue) {
         String currentDarkMode = String.valueOf(ThemeUtil.getDarkMode(mContext));
-        HorizontalRadioPreference darkModePref = (HorizontalRadioPreference) findPreference("dark_mode");
+        HorizontalRadioPreference darkModePref = findPreference("dark_mode");
+
+        if (darkModePref == null) {
+            return false;
+        }
 
         switch (preference.getKey()) {
             case "dark_mode":
                 if (currentDarkMode != newValue) {
-                    ThemeUtil.setDarkMode(mActivity, ((String) newValue).equals("0") ? ThemeUtil.DARK_MODE_DISABLED : ThemeUtil.DARK_MODE_ENABLED);
+                    ThemeUtil.setDarkMode(mActivity, newValue.equals("0") ? ThemeUtil.DARK_MODE_DISABLED : ThemeUtil.DARK_MODE_ENABLED);
                 }
                 return true;
             case "dark_mode_auto":
@@ -64,18 +68,21 @@ public class PreferencesSettingsFragment extends SettingsBaseFragment implements
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        int darkMode = ThemeUtil.getDarkMode(mContext);
+        final HorizontalRadioPreference darkModePref = findPreference("dark_mode");
+        final SwitchPreference autoDarkModePref = findPreference("dark_mode_auto");
 
-        HorizontalRadioPreference darkModePref = (HorizontalRadioPreference) findPreference("dark_mode");
-        assert darkModePref != null;
+        if (darkModePref == null || autoDarkModePref == null) {
+            return;
+        }
+
+        final int darkMode = ThemeUtil.getDarkMode(mContext);
+
         darkModePref.setOnPreferenceChangeListener(this);
         darkModePref.setDividerEnabled(false);
         darkModePref.setTouchEffectEnabled(false);
         darkModePref.setEnabled(darkMode != ThemeUtil.DARK_MODE_AUTO);
         darkModePref.setValue(SeslMisc.isLightTheme(mContext) ? "0" : "1");
 
-        SwitchPreference autoDarkModePref = (SwitchPreference) findPreference("dark_mode_auto");
-        assert autoDarkModePref != null;
         autoDarkModePref.setOnPreferenceChangeListener(this);
         autoDarkModePref.setChecked(darkMode == ThemeUtil.DARK_MODE_AUTO);
     }
