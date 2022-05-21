@@ -7,6 +7,7 @@
     android:id="@+id/settings_toolbar_layout"
     app:title="@string/settings"
     app:expanded="false"
+    app:expandable="false"
     app:layout_behavior="@string/sesl_appbar_scrolling_view_behavior"
     app:navigationIcon="@drawable/ic_samsung_arrow_left"
     tools:context=".settings.MainSettingsActivity">
