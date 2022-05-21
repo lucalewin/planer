@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="LucraftUI.Style.Switch" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/textColor</item>
+    </style>
+
+    <style name="LucraftUI.Layouts.FormLayout" parent="@style/LucraftUI.Theme">
+<!--        <item name="android:editTextStyle">@style/LucraftUI.Layouts.FormLayout.EditText</item>-->
+<!--        <item name="android:orientation">vertical</item>-->
+    </style>
+
+<!--    <style name="LucraftUI.Layouts.FormLayout.EditText">-->
+<!--        <item name="android:padding">@dimen/lucraftui_layout_formlayout_edittext_padding</item>-->
+<!--        <item name="android:layout_width">@dimen/lucraftui_layout_formlayout_edittext_width</item>-->
+<!--        <item name="android:layout_height">@dimen/lucraftui_layout_formlayout_edittext_height</item>-->
+<!--    </style>-->
+
+</resources>

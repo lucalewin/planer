@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="colorPrimary">#673AB7</color>
+    <color name="colorPrimaryDark">#FF9800</color>
+    <color name="colorAccent">#4763FF</color>
+    <color name="textColor">#ff9b00</color>
+
+    <color name="lucraftui_window_background">#111</color>
+    <color name="lucraftui_status_bar">#111</color>
+
+</resources>

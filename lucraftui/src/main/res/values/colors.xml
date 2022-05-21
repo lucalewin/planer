@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--  Light Theme  -->
+    <color name="colorPrimary">#673AB7</color>
+    <color name="colorPrimaryDark">#FF9800</color>
+    <color name="colorAccent">#4763FF</color>
+    <color name="textColor">#111</color>
+
+    <color name="lucraftui_window_background">#eee</color>
+    <color name="lucraftui_status_bar">#eee</color>
+
+</resources>
