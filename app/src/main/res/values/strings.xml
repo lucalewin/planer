@@ -2,7 +2,7 @@
     <string name="app_name" translatable="false">Planer</string>
     <string name="app_info">About Planer</string>
     <string name="settings">Settings</string>
-    <string name="iserv_base_url_str">Iserv Base URL</string>
+    <string name="iserv_base_url_str">Iserv Domain</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="save">Save</string>
@@ -40,5 +40,6 @@
     <string name="tips_card_class_message">You must specify your class so that the plan for your class can be displayed.</string>
     <string name="tips_card_class_title">Set your class</string>
     <string name="iserv_synced_at">Synced with Iserv at %s</string>
-    <string name="no_internet_access">No internet connection available</string>
+    <string name="error_no_internet_access">No internet connection available</string>
+    <string name="error_malformed_url">Malformed URL</string>
 </resources>
