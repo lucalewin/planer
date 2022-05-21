@@ -15,9 +15,6 @@ import dev.lucalewin.planer.R;
 
 public class IservPlan {
 
-    public static final int TODAY = 0;
-    public static final int TOMORROW = 1;
-
     private final DayOfWeek day;
     private final Map<String, List<IservPlanRow>> classes;
 

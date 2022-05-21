@@ -1,5 +1,6 @@
 package dev.lucalewin.planer.iserv.web_scraping;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -9,7 +10,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,85 +29,120 @@ import dev.lucalewin.planer.iserv.IservPlanRow;
 import dev.lucalewin.planer.settings.IservAccountSettingsActivity;
 import dev.lucalewin.planer.util.DateUtil;
 
+/**
+ *
+ * @author Luca Lewin
+ * @since Planer v1.0
+ */
 public class IservWebScraper {
-
-    private static String base_url;
 
     private static final WebClient webClient = new WebClient();
 
-    public static boolean login(Context context) throws MalformedURLException, ExecutionException, InterruptedException {
-        SharedPreferences sharedPreferences = context.getSharedPreferences(IservAccountSettingsActivity.ISERV_SP_NAME, Context.MODE_PRIVATE);
+    /**
+     *
+     * The values are specific for the url of the substitution plan
+     * subst_001.htm is the page for the current plan --> TODAY = 1
+     * subst_002.htm is the page for the next plan    --> TOMORROW = 2
+     */
+    public static final int TODAY = 1, TOMORROW = 2;
 
-        base_url = sharedPreferences.getString("base_url", "");
-        if (!base_url.startsWith("http://") && !base_url.startsWith("https://")) {
-            base_url = "https://" + base_url;
-        }
-
-        String username = sharedPreferences.getString("username", "");
-        String password = sharedPreferences.getString("password", "");
-
-        final String login_url = base_url + "/iserv/app/login";
-
-        final URL loginRequestUrl = new URL(login_url);
-        final String loginRequestBody = String.format("_username=%s&_password=%s&_remember_me=on", username, password);
-
-        WebRequest loginRequest = new WebRequest(loginRequestUrl, HttpMethod.POST);
-        loginRequest.addHeaderField("content-type", "application/x-www-form-urlencoded");
-        loginRequest.setBody(loginRequestBody);
-
-        Future<WebResponse> responseFuture = webClient.makeRequestAsync(loginRequest);
-        WebResponse response = responseFuture.get();
-
-        return response.getResponseCode() == 302; // 302 = Found --> username and password were correct
-    }
-
-    private static String getTodayPlanerHtml(Context context) throws MalformedURLException, ExecutionException, InterruptedException {
-        SharedPreferences sharedPreferences = context.getSharedPreferences(IservAccountSettingsActivity.ISERV_SP_NAME, Context.MODE_PRIVATE);
-
-        base_url = sharedPreferences.getString("base_url", "");
-        if (!base_url.startsWith("http://") && !base_url.startsWith("https://")) {
-            base_url = "https://" + base_url;
-        }
-
-        final String plan_url = base_url + "/iserv/plan/show/raw/Vertretungsplan%20Sch%C3%BCler/subst_001.htm";
-
-        WebRequest planerRequest = new WebRequest(new URL(plan_url), HttpMethod.GET);
-        planerRequest.setResponseCharset(StandardCharsets.ISO_8859_1);
-
-        Future<WebResponse> responseFuture = webClient.makeRequestAsync(planerRequest);
-        WebResponse webResponse = responseFuture.get();
-
-        return webResponse.getBody();
-    }
-
-    private static String getTomorrowPlanerHtml(Context context) throws MalformedURLException, ExecutionException, InterruptedException {
-        SharedPreferences sharedPreferences = context.getSharedPreferences(
+    /**
+     *
+     * @param context the context of the current activity
+     * @return true if the login attempt was successful, otherwise false
+     */
+    public static boolean login(Context context) {
+        final SharedPreferences sharedPreferences = context.getSharedPreferences(
                 IservAccountSettingsActivity.ISERV_SP_NAME, Context.MODE_PRIVATE);
 
-        base_url = sharedPreferences.getString("base_url", "");
-        if (!base_url.startsWith("http://") && !base_url.startsWith("https://")) {
-            base_url = "https://" + base_url;
+        final String domain   = sharedPreferences.getString("base_url", "");
+        final String username = sharedPreferences.getString("username", "");
+        final String password = sharedPreferences.getString("password", "");
+
+        final String login_url = String.format("https://%s/iserv/app/login", domain);
+        final String loginRequestBody = String.format("_username=%s&_password=%s&_remember_me=on",
+                username,
+                password);
+
+        try {
+            /*
+             create WebRequest
+              - the content type needs to be 'application/x-www-form-urlencoded'
+                otherwise the login request will fail
+              - the login credentials are sent in the request body
+            */
+            final WebRequest loginRequest = WebRequest.builder(login_url)
+                    .setMethod(HttpMethod.POST)
+                    .addHeaderField("content-type", "application/x-www-form-urlencoded")
+                    .setBody(loginRequestBody)
+                    .build();
+
+            final Future<WebResponse> responseFuture = webClient.makeRequestAsync(loginRequest);
+            final WebResponse response = responseFuture.get();
+
+            // 302 = Found --> username and password were correct
+            return response.getResponseCode() == 302;
+        } catch (MalformedURLException | ExecutionException | InterruptedException e) {
+            e.printStackTrace();
         }
 
-        final String planerUrl = base_url + "/iserv/plan/show/raw/Vertretungsplan%20Sch%C3%BCler/subst_002.htm";
-
-        WebRequest planerRequest = new WebRequest(new URL(planerUrl), HttpMethod.GET);
-        planerRequest.setResponseCharset(StandardCharsets.ISO_8859_1);
-
-        Future<WebResponse> responseFuture = webClient.makeRequestAsync(planerRequest);
-        WebResponse response = responseFuture.get();
-
-        return response.getBody();
+        // login failed
+        return false;
     }
 
-    public static IservPlan getAffectedData(Context context, int day) throws MalformedURLException, ExecutionException, InterruptedException {
+    /**
+     *
+     * @param context the context of the current activity
+     * @param day ({@link IservWebScraper#TODAY}, {@link IservWebScraper#TOMORROW})
+     * @return the html of the response body
+     */
+    private static String get(Context context, int day) {
+        final SharedPreferences sharedPreferences = context.getSharedPreferences(
+                IservAccountSettingsActivity.ISERV_SP_NAME, Context.MODE_PRIVATE);
+
+        final String base_url = sharedPreferences.getString("base_url", "");
+
+        @SuppressLint("DefaultLocale")
+        final String url = String.format("https://%s/iserv/plan/show/raw/Vertretungsplan%%20Sch%%C3%%BCler/subst_00%d.htm",
+                base_url, day);
+
+        try {
+            final WebRequest planerRequest = WebRequest.builder(url)
+                    .setMethod(HttpMethod.GET)
+                    .setResponseCharset(StandardCharsets.ISO_8859_1)
+                    .build();
+
+            final Future<WebResponse> responseFuture = webClient.makeRequestAsync(planerRequest);
+            final WebResponse response = responseFuture.get();
+
+            return response.getBody();
+        } catch (MalformedURLException | ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    /**
+     *
+     * @param context the context of the current activity
+     * @param day see {@link #TODAY}, {@link #TOMORROW}
+     * @return the iserv substitution plan as an {@link IservPlan} for the specified <i>day</i>
+     */
+    public static IservPlan getAffectedData(Context context, int day) {
+
+        final String res_body = get(context, day);
+
+        if (res_body == null) return null;
 
         // parse html document
-        Document root = day == 0 ? Jsoup.parse(getTodayPlanerHtml(context)) : Jsoup.parse(getTomorrowPlanerHtml(context));
+        Document root = Jsoup.parse(res_body);
 
         Element infoTable = root.getElementsByClass("info").first();
 
-        assert infoTable != null;
+
+        if (infoTable == null) return null;
+
         Elements rows = infoTable.selectXpath("/table/tbody/tr");
 
         String dayOfTheWeek = Objects.requireNonNull(root.getElementsByClass("mon_title").first()).text().split(" ")[1];
@@ -121,7 +156,10 @@ public class IservWebScraper {
         // parse planer
         Element planerTable = root.getElementsByClass("mon_list").first();
 
-        assert planerTable != null;
+        if (planerTable == null) {
+            return new IservPlan(DateUtil.parseDayOfWeek(dayOfTheWeek, Locale.GERMAN), classes);
+        }
+
         Elements planerTableRows = planerTable.selectXpath("/table/tbody/tr");
 
         List<IservPlanRow> current;
@@ -130,7 +168,11 @@ public class IservWebScraper {
             Element planerRow = planerTableRows.get(i);
 
             Element firstColumn = planerRow.children().first();
-            assert firstColumn != null;
+
+            if (firstColumn == null) {
+                return new IservPlan(DateUtil.parseDayOfWeek(dayOfTheWeek, Locale.GERMAN), classes);
+            }
+
             String currentClass = firstColumn.text().toUpperCase();
 
             current = new ArrayList<>();
