@@ -29,17 +29,25 @@ import dev.lucalewin.planer.preferences.Preferences;
 import dev.lucalewin.planer.version.UpdateManager;
 import dev.lucalewin.planer.views.TipsCardView;
 
+/**
+ * @author Luca Lewin
+ * @since Planer v1.0
+ */
 public class MainActivity extends BaseThemeActivity {
 
+    // the root layouts
     private ToolbarLayout toolbarLayout;
     private SwipeRefreshLayout swipeRefreshLayout;
 
+    // the labels showing the day for the plans
     private MaterialTextView currentDayPlanerLabel;
     private MaterialTextView nextDayPlanerLabel;
 
+    // the container holding the TableLayout
     private MaterialCardView currentPlanerContainer;
     private MaterialCardView nextPlanerContainer;
 
+    // the tip cards are hidden when the activity starts
     private TipsCardView tipCardIservAccount;
     private TipsCardView tipCardClass;
     private TipsCardView tipCardError;
@@ -88,11 +96,19 @@ public class MainActivity extends BaseThemeActivity {
 
         tipCardError = findViewById(R.id.tip_card_error);
 
-
         swipeRefreshLayout.setRefreshing(true);
         onRefresh();
     }
 
+    /**
+     *
+     * This method starts a new thread to not block the main (UI) thread
+     * It then
+     * - checks if all settings the user changed are valid
+     * - loads the current and next substitution plan from iserv
+     * - makes a call to update the UI with the newly retrieved plans
+     * - stops the refreshing symbol
+     */
     private void onRefresh() {
         // refresh async
         new Thread(() -> {
@@ -118,10 +134,14 @@ public class MainActivity extends BaseThemeActivity {
         }).start();
     }
 
+    /**
+     *
+     * @return true if all settings are valid, otherwise false
+     */
     private boolean areSettingsValid() {
         // check if device has an internet connection
         if (!Device.hasInternetAccess(this)) {
-            Toast.makeText(this, getString(R.string.no_internet_access), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.error_no_internet_access), Toast.LENGTH_SHORT).show();
             return false;
         }
 
@@ -157,6 +177,11 @@ public class MainActivity extends BaseThemeActivity {
         return true;
     }
 
+    /**
+     *
+     * @param p0 the current plan
+     * @param p1 the next plan
+     */
     private void updateUI(IservPlan p0, IservPlan p1) {
         new Handler(Looper.getMainLooper()).post(() -> {
             final String clazz = Preferences.getSharedPreferences(MainActivity.this).getString("class", null);
