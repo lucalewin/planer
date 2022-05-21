@@ -12,6 +12,9 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
+
+
 rootProject.name = "Planer"
 include ':app'
 include ':lib'
+include ':lucraftui'
